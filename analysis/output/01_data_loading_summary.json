@@ -1,0 +1,38 @@
+{
+  "rows": 1010724,
+  "columns": 24,
+  "column_names": [
+    "id",
+    "click",
+    "hour",
+    "C1",
+    "banner_pos",
+    "site_id",
+    "site_domain",
+    "site_category",
+    "app_id",
+    "app_domain",
+    "app_category",
+    "device_id",
+    "device_ip",
+    "device_model",
+    "device_type",
+    "device_conn_type",
+    "C14",
+    "C15",
+    "C16",
+    "C17",
+    "C18",
+    "C19",
+    "C20",
+    "C21"
+  ],
+  "memory_mb": 639.79,
+  "click_rate": 0.169392,
+  "positive_clicks": 171209,
+  "missing_total": 0,
+  "target_counts": {
+    "0": 839515,
+    "1": 171209
+  }
+}

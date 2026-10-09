@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Data Loading & Inspection — AdSpark CTR{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div class="kicker">Stage 01</div>
+  <h1>Data Loading & <span class="gradient-text">Dataset Inspection</span></h1>
+  <p class="subtitle">
+    Loading and validating the 1.01M sample Avazu digital advertisement impression dataset. Downcasting data types and verifying data integrity.
+  </p>
+</header>
+
+<div class="page-main">
+  <!-- Key Stats Grid -->
+  <section class="section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Rows</div>
+        <div class="stat-value">{{ summary.rows | default(1010724) }}</div>
+        <div class="stat-sub">Ad impression events</div>
+      </div>
+      <div class="stat-card accent-green">
+        <div class="stat-label">Total Columns</div>
+        <div class="stat-value">{{ summary.columns | default(24) }}</div>
+        <div class="stat-sub">Features & Target</div>
+      </div>
+      <div class="stat-card accent-purple">
+        <div class="stat-label">Memory Usage</div>
+        <div class="stat-value">{{ summary.memory_mb | default(639.79) }} MB</div>
+        <div class="stat-sub">Optimized memory footprint</div>
+      </div>
+      <div class="stat-card accent-orange">
+        <div class="stat-label">Missing Values</div>
+        <div class="stat-value">{{ summary.missing_total | default(0) }}</div>
+        <div class="stat-sub">Clean dataset with 0 nulls</div>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <!-- Data Grid Section -->
+  <section class="section" id="data-grid-section">
+    <div style="text-align: center; margin: 2rem 0;">
+      <button id="loadDataBtn" onclick="loadSampleData()" class="btn btn-primary" style="padding: 10px 24px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; background: var(--accent); color: white; border: none; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        Load Data (First 50 Rows)
+      </button>
+    </div>
+    
+    <div id="dataGridContainer" style="display: none;">
+      <h3 style="margin-bottom: 1rem; color: var(--text-primary);">Dataset Preview</h3>
+      <div class="table-wrap" style="max-height: 75vh; margin-bottom: 2rem; overflow-y: auto; overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 8px;">
+        <table class="data-table" id="sampleDataTable" style="white-space: nowrap;">
+          <thead>
+            <tr id="sampleDataHead"></tr>
+          </thead>
+          <tbody id="sampleDataBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function loadSampleData() {
+      const btn = document.getElementById('loadDataBtn');
+      btn.innerText = "Loading...";
+      btn.disabled = true;
+
+      fetch('/api/sample-data')
+        .then(res => res.json())
+        .then(data => {
+          if(data.error) {
+            alert("Error loading data: " + data.error);
+            btn.innerText = "Load Data (First 50 Rows)";
+            btn.disabled = false;
+            return;
+          }
+
+          if(data.length > 0) {
+            const cols = Object.keys(data[0]);
+            const thead = document.getElementById('sampleDataHead');
+            thead.innerHTML = cols.map(c => `<th>${c}</th>`).join('');
+
+            const tbody = document.getElementById('sampleDataBody');
+            tbody.innerHTML = data.map(row => {
+              return `<tr>${cols.map(c => `<td>${row[c]}</td>`).join('')}</tr>`;
+            }).join('');
+
+            document.getElementById('dataGridContainer').style.display = 'block';
+            btn.style.display = 'none';
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          btn.innerText = "Load Data (First 50 Rows)";
+          btn.disabled = false;
+        });
+    }
+  </script>
+
+
+  <!-- Figures Gallery -->
+  
+
+  
+</div>
+{% endblock %}

@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — AdSpark CTR Prediction{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<header class="page-header" style="padding-bottom: 0; border-bottom: none;">
+  <div class="dashboard-hero">
+    <div class="hero-logo">As</div>
+
+    <h1 class="hero-title">
+      <span class="gradient-text">AdSpark</span>
+      <br />
+      CTR Prediction
+    </h1>
+
+    <p class="hero-tagline">
+      An end-to-end machine learning project that predicts whether an online
+      ad impression results in a click — built on the
+      <strong>Avazu CTR Kaggle dataset</strong> with ~40 million anonymised
+      ad impressions.
+    </p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="stat-number">40M+</div>
+        <div class="stat-label">Impressions</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-number">23</div>
+        <div class="stat-label">Features</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-number">24</div>
+        <div class="stat-label">Pipeline Stages</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-number">12</div>
+        <div class="stat-label">Models</div>
+      </div>
+    </div>
+
+    <div style="position: relative; z-index: 1; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 24px;">
+      <a href="{{ url_for('data_loading') }}" class="btn">
+        ⚡ Start Exploring
+      </a>
+      <a href="#pipeline" class="btn" style="background: transparent; border: 1px solid var(--border); color: var(--text-primary);">
+        View Pipeline
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Main Page Content -->
+<div class="page-main" id="pipeline">
+  <!-- Section 01: Project Pipeline -->
+  <section class="section">
+    <h2 class="section-title">
+      <span class="section-badge">01</span>
+      Project Pipeline
+    </h2>
+    <p class="section-desc">
+      The complete machine learning workflow — from raw data to regularised models, 
+      including unsupervised clustering, advanced mathematical optimizations, and a real-time sandbox.
+    </p>
+
+    <div class="quick-access-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px;">
+      <a href="{{ url_for('data_loading') }}" class="quick-card" style="text-decoration: none; color: inherit;">
+        <div class="card-icon blue">📁</div>
+        <h3>Data Loading</h3>
+        <p>Load, inspect &amp; preview the Avazu dataset</p>
+        <span class="card-index">Stage 01</span>
+      </a>
+
+      <a href="{{ url_for('eda') }}" class="quick-card" style="text-decoration: none; color: inherit;">
+        <div class="card-icon green">📊</div>
+        <h3>Exploratory Data Analysis</h3>
+        <p>15-step statistical &amp; visual analysis</p>
+        <span class="card-index">Stage 02</span>
+      </a>
+
+      <a href="{{ url_for('feature_engineering') }}" class="quick-card" style="text-decoration: none; color: inherit;">
+        <div class="card-icon orange">⚙️</div>
+        <h3>Preprocessing</h3>
+        <p>Missing value strategies &amp; feature transforms</p>
+        <span class="card-index">Stage 03</span>
+      </a>
+
+      <a href="{{ url_for('linear_regression') }}" class="quick-card" style="text-decoration: none; color: inherit;">
+        <div class="card-icon purple">📈</div>
+        <h3>Linear Regression</h3>
+        <p>OLS baseline model &amp; performance evaluation</p>
+        <span class="card-index">Stage 04</span>
+      </a>
+
+      <a href="{{ url_for('logistic_regression') }}" class="quick-card" style="text-decoration: none; color: inherit;">
+        <div class="card-icon blue">🎯</div>
+        <h3>Logistic Regression</h3>
+        <p>Classification model for click prediction</p>
+        <span class="card-index">Stage 05</span>
+      </a>
+
+      <a href="{{ url_for('regularization') }}" class="quick-card" style="text-decoration: none; color: inherit;">
+        <div class="card-icon green">⚖️</div>
+        <h3>Regularization</h3>
+        <p>Lasso, Ridge &amp; Elastic Net techniques</p>
+        <span class="card-index">Stage 06</span>
+      </a>
+
+      <a href="{{ url_for('decision_tree') }}" class="quick-card" style="text-decoration: none; color: inherit;">
+        <div class="card-icon purple">🌲</div>
+        <h3>Decision Tree</h3>
+        <p>Tree-based classifier with depth sweep</p>
+        <span class="card-index">Stage 07</span>
+      </a>
+
+      <a href="{{ url_for('ensemble') }}" class="quick-card" style="text-decoration: none; color: inherit;">
+        <div class="card-icon orange">🚀</div>
+        <h3>Ensemble Learning</h3>
+        <p>Random Forest, Gradient Boosting &amp; AdaBoost</p>
+        <span class="card-index">Stage 08</span>
+      </a>
+
+      <a href="{{ url_for('kmeans') }}" class="quick-card" style="text-decoration: none; color: inherit;">
+        <div class="card-icon blue">📍</div>
+        <h3>K-Means Clustering</h3>
+        <p>Centroid-based ad-hoc segmentation</p>
+        <span class="card-index">Stage 09</span>
+      </a>
+
+      <a href="{{ url_for('anomaly') }}" class="quick-card" style="text-decoration: none; color: inherit;">
+        <div class="card-icon purple">🚨</div>
+        <h3>Anomaly Detection</h3>
+        <p>Isolation Forest outlier identification</p>
+        <span class="card-index">Stage 13</span>
+      </a>
+
+      <a href="{{ url_for('calibration') }}" class="quick-card" style="text-decoration: none; color: inherit;">
+        <div class="card-icon green">🎯</div>
+        <h3>Probability Calibration</h3>
+        <p>Isotonic and Platt scaling</p>
+        <span class="card-index">Stage 16</span>
+      </a>
+      
+      <a href="{{ url_for('predict_page') }}" class="quick-card" style="text-decoration: none; color: inherit; border: 1px solid var(--accent);">
+        <div class="card-icon purple">🚀</div>
+        <h3>Real-Time Sandbox</h3>
+        <p>Live interactive CTR prediction engine</p>
+        <span class="card-index">Stage 20</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Section 02: About the Project -->
+  <section class="section">
+    <h2 class="section-title">
+      <span class="section-badge">02</span>
+      About the Project
+    </h2>
+    <p class="section-desc">
+      AdSpark studies <em>click-through rate</em> (CTR) — the probability that a user
+      clicks on a displayed ad. Click prediction is the core signal behind ad ranking,
+      bidding, and revenue optimisation in the digital advertising industry.
+    </p>
+
+    <div class="callout blue">
+      <span class="callout-title">Goal: </span>
+      Given the context of an ad impression (publisher site/app, device type,
+      banner position, anonymised features), predict whether that impression
+      results in a click.
+    </div>
+
+    <div class="callout green" style="margin-top: 14px;">
+      <span class="callout-title">Method: </span>
+      A comprehensive Python pipeline loads the dataset, explores it through visual EDA,
+      engineers features, then trains and evaluates a robust suite of classifiers —
+      <strong>Linear/Logistic Regression</strong>, <strong>Ensembles (XGBoost/LightGBM)</strong>, 
+      and <strong>Advanced Factorization Machines</strong> — optimized for AUC and Log Loss.
+    </div>
+  </section>
+
+  <!-- Section 03: Tools & Technology -->
+  <section class="section">
+    <h2 class="section-title">
+      <span class="section-badge">03</span>
+      Tools &amp; Technology
+    </h2>
+    <div class="chip-row">
+      <span class="chip">Python</span>
+      <span class="chip">Pandas</span>
+      <span class="chip">NumPy</span>
+      <span class="chip">Matplotlib</span>
+      <span class="chip">Seaborn</span>
+      <span class="chip">Scikit-learn</span>
+      <span class="chip">XGBoost</span>
+      <span class="chip">LightGBM</span>
+      <span class="chip">Flask</span>
+    </div>
+  </section>
+
+  <!-- Section 04: Comprehensive Leaderboard -->
+  <section class="section">
+    <div class="section-title">
+      <span class="section-badge">04</span>
+      <span>Model Results &amp; Leaderboard</span>
+    </div>
+    <p class="section-desc">
+      Final evaluation on the held-out 15% test sample. All models are trained on the
+      same engineered features; ensemble and advanced mathematical models dominate the rankings.
+    </p>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Algorithm Name</th>
+            <th>Model Family</th>
+            <th>ROC-AUC</th>
+            <th>Log-Loss</th>
+            <th>Accuracy</th>
+            <th>F1 Score</th>
+            <th>ECE Calibration</th>
+            <th>Latency (ms)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if leaderboard %}
+            {% for item in leaderboard %}
+            <tr class="{% if loop.index == 1 %}highlight{% endif %}">
+              <td style="font-weight: bold; color: {% if loop.index == 1 %}var(--green){% elif loop.index <= 3 %}var(--accent){% else %}var(--text-secondary){% endif %};">
+                #{{ loop.index }}
+              </td>
+              <td><strong>{{ item.name }}</strong></td>
+              <td><span class="chip" style="font-size: 0.72rem;">{{ item.type }}</span></td>
+              <td style="font-family: monospace; font-weight: bold; color: var(--green);">{{ item.roc_auc }}</td>
+              <td style="font-family: monospace;">{{ item.log_loss }}</td>
+              <td style="font-family: monospace;">{{ item.accuracy }}%</td>
+              <td style="font-family: monospace;">{{ item.f1 }}</td>
+              <td style="font-family: monospace;">{{ item.ece }}</td>
+              <td style="font-family: monospace;">{{ item.latency_ms }} ms</td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <!-- Fallback if leaderboard is missing -->
+            <tr>
+              <td><code>Linear Regression (OLS)</code></td>
+              <td colspan="2">Baseline</td>
+              <td style="font-family: monospace;">{{ "%.4f"|format(linreg.roc_auc) if linreg.roc_auc is defined else '0.6460' }}</td>
+              <td style="font-family: monospace;">{{ "%.4f"|format(linreg.log_loss) if linreg.log_loss is defined else '0.4355' }}</td>
+              <td colspan="4">Baseline — uncalibrated probabilities</td>
+            </tr>
+            <tr class="highlight">
+              <td><code>Logistic Regression</code></td>
+              <td colspan="2">Primary</td>
+              <td style="font-family: monospace; font-weight: bold; color: var(--green);">{{ "%.4f"|format(logreg.roc_auc) if logreg.roc_auc is defined else '0.6468' }}</td>
+              <td style="font-family: monospace;">{{ "%.4f"|format(logreg.log_loss) if logreg.log_loss is defined else '0.6566' }}</td>
+              <td colspan="4">Primary model — calibrated probabilities</td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

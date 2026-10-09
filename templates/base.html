@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}AdSpark — Production ML & Mathematical CTR Suite{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=2.2">
+  {% block extra_head %}{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">As</div>
+      <div class="brand-text">
+        <div class="brand-name">AdSpark ML</div>
+        <div class="brand-tagline">CTR PREDICTION & ML SUITE</div>
+      </div>
+    </div>
+
+    <!-- 00 Overview -->
+    <nav class="sidebar-nav">
+      <a href="{{ url_for('dashboard') }}" class="nav-item {% if active_page == 'dashboard' %}active{% endif %}">
+        <span class="nav-num">00</span>
+        <span><i class="fas fa-chart-pie" style="color: #6366f1; margin-right: 8px;"></i> Dashboard</span>
+      </a>
+
+      <!-- SUPERVISED LEARNING MODULES  -->
+      <div class="sidebar-section-label" style="color: #f87171;">🔴 SUPERVISED LEARNING</div>
+      
+      <a href="{{ url_for('data_loading') }}" class="nav-item {% if active_page == 'data_loading' %}active{% endif %}">
+        <span class="nav-num">01</span><span><i class="fas fa-folder-open" style="color: #3b82f6; margin-right: 8px;"></i> Data Loading</span>
+      </a>
+      <a href="{{ url_for('eda') }}" class="nav-item {% if active_page == 'eda' %}active{% endif %}">
+        <span class="nav-num">02</span><span><i class="fas fa-search" style="color: #14b8a6; margin-right: 8px;"></i> EDA</span>
+      </a>
+      <a href="{{ url_for('feature_engineering') }}" class="nav-item {% if active_page == 'feature_engineering' %}active{% endif %}">
+        <span class="nav-num">03</span><span><i class="fas fa-cogs" style="color: #8b5cf6; margin-right: 8px;"></i> Preprocessing</span>
+      </a>
+      <a href="{{ url_for('linear_regression') }}" class="nav-item {% if active_page == 'linear_regression' %}active{% endif %}">
+        <span class="nav-num">04</span><span><i class="fas fa-chart-line" style="color: #f43f5e; margin-right: 8px;"></i> Linear Regression</span>
+      </a>
+      <a href="{{ url_for('logistic_regression') }}" class="nav-item {% if active_page == 'logistic_regression' %}active{% endif %}">
+        <span class="nav-num">05</span><span><i class="fas fa-bullseye" style="color: #f97316; margin-right: 8px;"></i> Logistic Regression</span>
+      </a>
+      <a href="{{ url_for('regularization') }}" class="nav-item {% if active_page == 'regularization' %}active{% endif %}">
+        <span class="nav-num">06</span><span><i class="fas fa-balance-scale" style="color: #eab308; margin-right: 8px;"></i> Regularization (L1/L2)</span>
+      </a>
+      <a href="{{ url_for('decision_tree') }}" class="nav-item {% if active_page == 'decision_tree' %}active{% endif %}">
+        <span class="nav-num">07</span><span><i class="fas fa-tree" style="color: #22c55e; margin-right: 8px;"></i> Decision Trees</span>
+      </a>
+      <a href="{{ url_for('ensemble') }}" class="nav-item {% if active_page == 'ensemble' %}active{% endif %}">
+        <span class="nav-num">08</span><span><i class="fas fa-layer-group" style="color: #10b981; margin-right: 8px;"></i> Ensemble Methods</span>
+      </a>
+
+      <!-- UNSUPERVISED, DIMENSIONALITY & ANOMALY  -->
+      <div class="sidebar-section-label" style="color: #38bdf8;">🔵 UNSUPERVISED & ANOMALY</div>
+
+      <a href="{{ url_for('kmeans') }}" class="nav-item {% if active_page == 'kmeans' %}active{% endif %}">
+        <span class="nav-num">09</span><span><i class="fas fa-puzzle-piece" style="color: #0ea5e9; margin-right: 8px;"></i> K-Means Clustering</span>
+      </a>
+      <a href="{{ url_for('hierarchical') }}" class="nav-item {% if active_page == 'hierarchical' %}active{% endif %}">
+        <span class="nav-num">10</span><span><i class="fas fa-dna" style="color: #8b5cf6; margin-right: 8px;"></i> Hierarchical Dendrograms</span>
+      </a>
+      <a href="{{ url_for('dbscan') }}" class="nav-item {% if active_page == 'dbscan' %}active{% endif %}">
+        <span class="nav-num">11</span><span><i class="fas fa-satellite-dish" style="color: #6366f1; margin-right: 8px;"></i> DBSCAN Clustering</span>
+      </a>
+      <a href="{{ url_for('dimensionality') }}" class="nav-item {% if active_page == 'dimensionality' %}active{% endif %}">
+        <span class="nav-num">12</span><span><i class="fas fa-compress-arrows-alt" style="color: #d946ef; margin-right: 8px;"></i> PCA, t-SNE & UMAP</span>
+      </a>
+      <a href="{{ url_for('anomaly') }}" class="nav-item {% if active_page == 'anomaly' %}active{% endif %}">
+        <span class="nav-num">13</span><span><i class="fas fa-exclamation-triangle" style="color: #ef4444; margin-right: 8px;"></i> Anomaly Detection</span>
+      </a>
+
+      <!-- VALIDATION, METRICS & CALIBRATION -->
+      <div class="sidebar-section-label" style="color: #34d399;">🟢 METRICS & CALIBRATION</div>
+
+      <a href="{{ url_for('validation') }}" class="nav-item {% if active_page == 'validation' %}active{% endif %}">
+        <span class="nav-num">14</span><span><i class="fas fa-shield-alt" style="color: #10b981; margin-right: 8px;"></i> Validation Strategies</span>
+      </a>
+      <a href="{{ url_for('imbalanced_metrics') }}" class="nav-item {% if active_page == 'imbalanced_metrics' %}active{% endif %}">
+        <span class="nav-num">15</span><span><i class="fas fa-weight-hanging" style="color: #f59e0b; margin-right: 8px;"></i> Imbalanced Metrics</span>
+      </a>
+      <a href="{{ url_for('calibration') }}" class="nav-item {% if active_page == 'calibration' %}active{% endif %}">
+        <span class="nav-num">16</span><span><i class="fas fa-percentage" style="color: #3b82f6; margin-right: 8px;"></i> Probability Calibration</span>
+      </a>
+      <a href="{{ url_for('significance') }}" class="nav-item {% if active_page == 'significance' %}active{% endif %}">
+        <span class="nav-num">17</span><span><i class="fas fa-microscope" style="color: #8b5cf6; margin-right: 8px;"></i> McNemar Significance</span>
+      </a>
+
+      <!-- DIAGNOSTICS & EXPLAINABILITY -->
+      <div class="sidebar-section-label" style="color: #fbbf24;">📉 DIAGNOSTICS & SHAP</div>
+
+      <a href="{{ url_for('learning_curves') }}" class="nav-item {% if active_page == 'learning_curves' %}active{% endif %}">
+        <span class="nav-num">18</span><span><i class="fas fa-chart-area" style="color: #f43f5e; margin-right: 8px;"></i> Learning & Val Curves</span>
+      </a>
+      <a href="{{ url_for('explainability') }}" class="nav-item {% if active_page == 'explainability' %}active{% endif %}">
+        <span class="nav-num">19</span><span><i class="fas fa-brain" style="color: #ec4899; margin-right: 8px;"></i> SHAP Explainability</span>
+      </a>
+
+      <!-- INTERACTIVE TOOL -->
+      <div class="sidebar-section-label" style="color: #a78bfa;">🛠️ INTERACTIVE CTR SANDBOX</div>
+
+      <a href="{{ url_for('predict_page') }}" class="nav-item {% if active_page == 'predict' %}active{% endif %}">
+        <span class="nav-num">20</span><span><i class="fas fa-flask" style="color: #14b8a6; margin-right: 8px;"></i> Real-Time Sandbox</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="theme-toggle">
+        <span id="theme-toggle-text">☀️ Light Mode</span>
+      </button>
+      <p>Flask Web App • AdSpark Suite<br>Theoretical & Applied ML</p>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="content">
+    {% block content %}{% endblock %}
+  </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}?v=2.2"></script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}CTR Predictor Sandbox — AdSpark ML{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div class="kicker">Mathematical Machine Learning Engine</div>
+  <h1>Real-Time Ad <span class="gradient-text">CTR Predictor</span> Sandbox</h1>
+  <p class="subtitle">
+    Generate instantaneous Click-Through Rate probability predictions, binary click classifications, bilinear Factorization Machine interaction scores, and negative downsampling odds re-calibration.
+  </p>
+</header>
+
+<div class="page-main">
+  <section class="section">
+    <div class="sandbox-card">
+      <form id="ctr-predict-form">
+        
+        <!-- Algorithm & Mathematical Mode Selector -->
+        <div style="background: var(--bg-card-sub); padding: 16px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 20px;">
+          <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: var(--accent);">⚙️ Model Architecture & Calibration Settings</h4>
+          <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="model_type">Inference Model</label>
+              <select name="model_type" id="model_type" class="form-control">
+                <option value="xgboost_ensemble" selected>🏆 XGBoost Ensemble (0.7397 AUC - Top Accuracy)</option>
+                <option value="lightgbm_ensemble">⚡ LightGBM Ensemble (0.7391 AUC - High Speed)</option>
+                <option value="logistic_baseline">🎯 Logistic Regression (Standard Linear Log-Odds)</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="downsampling_rate">Negative Downsampling Rate ($w$)</label>
+              <select name="downsampling_rate" id="downsampling_rate" class="form-control">
+                <option value="1.0" selected>w = 1.0 (No Downsampling / Natural CTR)</option>
+                <option value="0.5">w = 0.5 (2:1 Negative Compression)</option>
+                <option value="0.25">w = 0.25 (4:1 Negative Compression)</option>
+                <option value="0.10">w = 0.10 (10:1 Negative Compression)</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="bayesian_pseudo_count">Empirical Bayes Prior Weight ($m$)</label>
+              <select name="bayesian_pseudo_count" id="bayesian_pseudo_count" class="form-control">
+                <option value="20.0" selected>m = 20.0 (Standard Regularization)</option>
+                <option value="50.0">m = 50.0 (Strong Global Shrinkage)</option>
+                <option value="5.0">m = 5.0 (Weak Shrinkage / Trust Sample)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <!-- Banner Position -->
+          <div class="form-group">
+            <label for="banner_pos">Banner Placement Position</label>
+            <select name="banner_pos" id="banner_pos" class="form-control">
+              <option value="7">Position #7 (Premium Top Banner - 32.5% CTR)</option>
+              <option value="1" selected>Position #1 (Header Banner - 18.4% CTR)</option>
+              <option value="0">Position #0 (Standard Banner - 16.4% CTR)</option>
+              <option value="2">Position #2 (Sidebar Ad - 13.9% CTR)</option>
+              <option value="4">Position #4 (In-Feed Ad - 16.5% CTR)</option>
+              <option value="3">Position #3 (Footer Ad - 7.1% CTR)</option>
+              <option value="5">Position #5 (Pop-up Ad - 6.5% CTR)</option>
+            </select>
+          </div>
+
+          <!-- Site Category -->
+          <div class="form-group">
+            <label for="site_category">Website Category</label>
+            <select name="site_category" id="site_category" class="form-control">
+              <option value="dedf689d">High Engagement Portal (dedf689d - 50.6% CTR)</option>
+              <option value="3e814130">News & Media (3e814130 - 28.0% CTR)</option>
+              <option value="42a36e14">Entertainment (42a36e14 - 24.6% CTR)</option>
+              <option value="28905ebd">Social Network (28905ebd - 20.7% CTR)</option>
+              <option value="f028772b" selected>General Web (f028772b - 18.0% CTR)</option>
+              <option value="50e219e0">E-Commerce (50e219e0 - 12.9% CTR)</option>
+              <option value="75fa27f6">Utilities (75fa27f6 - 11.2% CTR)</option>
+            </select>
+          </div>
+
+          <!-- App Category -->
+          <div class="form-group">
+            <label for="app_category">Mobile App Category</label>
+            <select name="app_category" id="app_category" class="form-control">
+              <option value="f95efa07">Gaming Apps (f95efa07 - 25.0% CTR)</option>
+              <option value="07d7df22" selected>Mainstream Utility Apps (07d7df22 - 19.9% CTR)</option>
+              <option value="4681bb9d">Lifestyle Apps (4681bb9d - 16.0% CTR)</option>
+              <option value="dc97ec06">Productivity Apps (dc97ec06 - 14.3% CTR)</option>
+              <option value="09481d60">Finance Apps (09481d60 - 14.1% CTR)</option>
+            </select>
+          </div>
+
+          <!-- Hour of Day -->
+          <div class="form-group">
+            <label for="hour">Hour of Impression (0 - 23)</label>
+            <select name="hour" id="hour" class="form-control">
+              <option value="1">01:00 AM (Peak Night Hours - 18.8% CTR)</option>
+              <option value="7">07:00 AM (Morning Hours - 18.0% CTR)</option>
+              <option value="14" selected>02:00 PM (Afternoon Peak - 17.7% CTR)</option>
+              <option value="15">03:00 PM (Late Afternoon - 18.2% CTR)</option>
+              <option value="20">08:00 PM (Evening Drop - 16.2% CTR)</option>
+            </select>
+          </div>
+
+          <!-- Day of Week -->
+          <div class="form-group">
+            <label for="day_of_week">Day of Week</label>
+            <select name="day_of_week" id="day_of_week" class="form-control">
+              <option value="0">Monday (18.06% CTR)</option>
+              <option value="1" selected>Tuesday (16.15% CTR)</option>
+              <option value="2">Wednesday (15.60% CTR)</option>
+              <option value="3">Thursday (17.55% CTR)</option>
+              <option value="4">Friday (17.60% CTR)</option>
+              <option value="5">Saturday (18.15% CTR)</option>
+              <option value="6">Sunday (18.24% CTR)</option>
+            </select>
+          </div>
+
+          <!-- Device Type -->
+          <div class="form-group">
+            <label for="device_type">Device Hardware Type</label>
+            <select name="device_type" id="device_type" class="form-control">
+              <option value="1" selected>Smartphone (Device Type #1 - Standard)</option>
+              <option value="0">Tablet (Device Type #0 - High CTR 21.2%)</option>
+              <option value="4">Desktop/Other (Device Type #4 - Low CTR 9.6%)</option>
+            </select>
+          </div>
+
+          <!-- Connection Type -->
+          <div class="form-group">
+            <label for="device_conn_type">Network Connection Type</label>
+            <select name="device_conn_type" id="device_conn_type" class="form-control">
+              <option value="0" selected>Cellular / 4G Broadband (Type #0 - 18.1% CTR)</option>
+              <option value="2">Wi-Fi (Type #2 - 13.4% CTR)</option>
+              <option value="3">Legacy 3G/2G (Type #3 - 4.4% CTR)</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn" style="width: 100%; justify-content: center; font-size: 1.05rem; margin-top: 10px;">
+          ⚡ Calculate Live Mathematical CTR Prediction
+        </button>
+      </form>
+
+      <!-- Prediction Output Box -->
+      <div id="prediction-output" class="prediction-result" style="display: none; margin-top: 25px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted);">Calibrated Predicted CTR</div>
+            <div id="res-pct" style="font-size: 2.8rem; font-weight: 900; color: var(--accent); line-height: 1;">18.50%</div>
+            <div id="res-ci" style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">95% Wilson CI: [16.20%, 20.80%]</div>
+          </div>
+
+          <div style="text-align: right;">
+            <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted);">Classification Result</div>
+            <div id="res-label" style="font-weight: 800; font-size: 1.2rem; color: var(--green);">Will Click (1)</div>
+            <div id="res-tier" style="font-size: 0.82rem; color: var(--accent);">Medium Click Probability</div>
+            <div id="res-model" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 3px;">Model: XGBoost Ensemble</div>
+          </div>
+        </div>
+
+        <!-- Meter Bar -->
+        <div class="result-meter-wrap" style="margin: 15px 0;">
+          <div id="res-meter" class="result-meter-fill" style="width: 50%;"></div>
+        </div>
+
+        <!-- Mathematical Trace Breakdown Card -->
+        <div style="background: var(--bg-card-sub); padding: 16px; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 18px;">
+          <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--accent); margin-bottom: 10px;">📐 Step-by-Step Mathematical Trace Decomposition:</h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; font-family: monospace; font-size: 0.85rem;">
+            <div>• Base Intercept (\(w_0\)): <span style="font-weight: bold;">-1.820</span></div>
+            <div>• 1st-Order Linear (\(\mathbf{w}^T \mathbf{x}\)): <span id="trace-linear" style="font-weight: bold; color: var(--accent);">+0.320</span></div>
+            <div>• 2nd-Order Bilinear (\(\sum \langle \mathbf{v}_i, \mathbf{v}_j \rangle\)): <span id="trace-inter" style="font-weight: bold; color: var(--green);">0.000</span></div>
+            <div>• Total Raw Log-Odds (\(z\)): <span id="trace-logodds" style="font-weight: bold;">-1.500</span></div>
+            <div>• Downsampling Shift (\(\ln w\)): <span id="trace-shift" style="font-weight: bold; color: var(--purple);">0.000</span></div>
+            <div>• Bayes Smoothed Rate: <span id="trace-bayes" style="font-weight: bold; color: var(--green);">17.40%</span></div>
+          </div>
+        </div>
+
+        <!-- Drivers Breakdown -->
+        <div style="margin-top: 20px;">
+          <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; color: var(--text-primary);">Feature Impact Drivers & Odds Attributions:</h4>
+          <div id="res-drivers"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+# Data files & zip archives
+Data/
+*.gz
+*.zip
+AdSpark_CTR Prediction.zip
+response.json
+
+# Virtual Environment & IDEs
+.venv/
+venv/
+ENV/
+.idea/
+.vscode/
+__pycache__/
+*.pyc
+
+# Node modules & build artifacts
+webpage/node_modules/
+node_modules/
+dist/
+webpage/dist/
+
+# OS files
+.DS_Store
+Thumbs.db
