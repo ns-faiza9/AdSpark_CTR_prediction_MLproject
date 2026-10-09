@@ -72,18 +72,21 @@ def data_loading():
 
 @app.route("/api/sample-data")
 def api_sample_data():
-    import pandas as pd
-    import sys
-    sys.path.append("analysis")
-    from common import TRAIN_SAMPLE
+    """Fast endpoint returning pre-cached 50 sample rows of dataset."""
+    sample_json_path = OUTPUT_DIR / "01_sample_50.json"
     try:
+        if sample_json_path.exists():
+            with open(sample_json_path, "r", encoding="utf-8") as f:
+                content = f.read()
+            return app.response_class(response=content, status=200, mimetype="application/json")
+        
+        # Fallback if JSON file is missing
+        import pandas as pd
+        import sys
+        sys.path.append("analysis")
+        from common import TRAIN_SAMPLE
         df = pd.read_csv(TRAIN_SAMPLE, nrows=50)
-        import json
-        return app.response_class(
-            response=json.dumps(df.to_dict(orient="records"), sort_keys=False),
-            status=200,
-            mimetype="application/json"
-        )
+        return jsonify(df.to_dict(orient="records"))
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
