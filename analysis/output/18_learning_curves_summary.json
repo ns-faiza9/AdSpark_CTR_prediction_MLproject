@@ -1,0 +1,5 @@
+{
+  "final_train_score": 0.81,
+  "final_val_score": 0.74,
+  "bias_variance_diagnosis": "Good Fit \u2014 Convergence gap is narrow (< 0.07), indicating balanced bias-variance."
+}

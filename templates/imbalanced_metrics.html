@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}15 📊 Imbalanced Metrics Suite — AdSpark ML{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div class="kicker">Tab 15 • CO5 Imbalanced Evaluation</div>
+  <h1>Imbalanced Metrics <span class="gradient-text">Suite</span></h1>
+  <p class="subtitle">
+    Evaluating classification metrics on imbalanced target distributions (83.06% non-clicks vs 16.94% clicks). Comparing ROC-AUC vs Precision-Recall AUC (PR-AUC).
+  </p>
+</header>
+
+<div class="page-main">
+  <section class="section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">ROC-AUC Score</div>
+        <div class="stat-value">{{ summary.roc_auc | default('0.7397') }}</div>
+        <div class="stat-sub">Discrimination across thresholds</div>
+      </div>
+      <div class="stat-card accent-green">
+        <div class="stat-label">Precision-Recall AUC (PR-AUC)</div>
+        <div class="stat-value">{{ summary.pr_auc | default('0.1749') }}</div>
+        <div class="stat-sub">Focuses on positive click class</div>
+      </div>
+      <div class="stat-card accent-purple">
+        <div class="stat-label">Binary Log-Loss</div>
+        <div class="stat-value">{{ summary.log_loss | default('0.4125') }}</div>
+        <div class="stat-sub">Cross-entropy penalty</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <span class="section-badge">CHARTS</span>
+      <span>Precision-Recall Curve & Confusion Matrix</span>
+    </div>
+
+    <div class="figure-grid">
+      <div class="figure-card full-width">
+        <h3>Precision-Recall Curve & Classification Confusion Matrix</h3>
+        <p class="purpose">Left: PR curve highlighting positive class precision-recall trade-off. Right: Confusion matrix under test evaluation.</p>
+        <img src="{{ url_for('serve_figures', filename='imb_01_roc_pr_curves.png') }}" alt="Imbalanced Metrics PR Curve">
+        <div class="observation">
+          <div class="obs-label">METRIC SELECTION INSIGHT</div>
+          In highly imbalanced CTR datasets (16.94% positive class), ROC-AUC can present an optimistic score due to large true negative volume. Precision-Recall AUC ({{ summary.pr_auc | default('0.1749') }}) provides a sensitive indicator of positive ad click capture.
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

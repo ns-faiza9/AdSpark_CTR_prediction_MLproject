@@ -1,0 +1,8 @@
+{
+  "brier_score_before": 0.1713,
+  "brier_score_platt": 0.1405,
+  "brier_score_isotonic": 0.1302,
+  "ece_before": 0.0845,
+  "ece_after_isotonic": 0.0124,
+  "conclusion": "Isotonic Regression reduces Expected Calibration Error (ECE) by 85.3%."
+}

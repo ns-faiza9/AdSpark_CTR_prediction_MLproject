@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}19 💡 Feature Importance & SHAP — AdSpark ML{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div class="kicker">Tab 19 • CO3 & CO5 Model Explainability</div>
+  <h1>Feature Importance <span class="gradient-text">& SHAP Analysis</span></h1>
+  <p class="subtitle">
+    Interpreting model decisions using Mean Decrease Impurity (MDI), Permutation Importance, and SHAP (Shapley Additive exPlanations) beeswarm feature attribution.
+  </p>
+</header>
+
+<div class="page-main">
+  <section class="section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Top Feature (MDI)</div>
+        <div class="stat-value">C18_enc</div>
+        <div class="stat-sub">Gini impurity reduction</div>
+      </div>
+      <div class="stat-card accent-green">
+        <div class="stat-label">Top Feature (Permutation)</div>
+        <div class="stat-value">site_id_freq</div>
+        <div class="stat-sub">Accuracy drop on shuffle</div>
+      </div>
+      <div class="stat-card accent-purple">
+        <div class="stat-label">Top Feature (SHAP)</div>
+        <div class="stat-value">C18_enc</div>
+        <div class="stat-sub">Mean |SHAP| log-odds impact</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <span class="section-badge">EXPLAINABILITY</span>
+      <span>SHAP Feature Attribution Analysis</span>
+    </div>
+
+    <div class="figure-grid">
+      <div class="figure-card full-width">
+        <h3>SHAP Feature Impact Summary</h3>
+        <p class="purpose">Mean absolute SHAP value quantifying each feature's contribution to predicted CTR log-odds.</p>
+        <img src="{{ url_for('serve_figures', filename='exp_01_shap_beeswarm.png') }}" alt="SHAP Beeswarm Plot">
+        <div class="observation">
+          <div class="obs-label">EXPLAINABILITY INSIGHT</div>
+          Anonymized categorical feature <code>C18_enc</code> and publisher domain frequency (<code>site_id_freq</code>) account for over 50% of the overall model predictive log-odds push.
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

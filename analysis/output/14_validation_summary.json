@@ -1,0 +1,11 @@
+{
+  "split_ratio": {
+    "train": 70,
+    "validation": 15,
+    "test": 15
+  },
+  "kfold_mean_auc": 0.5131,
+  "stratified_kfold_mean_auc": 0.5181,
+  "nested_cv_auc": 0.5061,
+  "optimism_bias_reduction": "Nested CV prevents hyperparameter leakage by tuning inner folds."
+}

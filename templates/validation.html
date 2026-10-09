@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}14 🔄 Validation Strategies — AdSpark ML{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div class="kicker">Tab 14 • CO5 Model Validation</div>
+  <h1>Validation <span class="gradient-text">Strategies & Cross-Validation</span></h1>
+  <p class="subtitle">
+    Comparing 3-Way Partitioning (70% Train / 15% Val / 15% Test), Standard K-Fold, Stratified K-Fold, and Nested Cross-Validation to eliminate optimism bias.
+  </p>
+</header>
+
+<div class="page-main">
+  <section class="section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">3-Way Partitioning</div>
+        <div class="stat-value">70 / 15 / 15</div>
+        <div class="stat-sub">Train / Validation / Holdout Test</div>
+      </div>
+      <div class="stat-card accent-green">
+        <div class="stat-label">Stratified K-Fold AUC</div>
+        <div class="stat-value">{{ summary.stratified_kfold_mean_auc | default('0.5181') }}</div>
+        <div class="stat-sub">5-Fold mean test score</div>
+      </div>
+      <div class="stat-card accent-purple">
+        <div class="stat-label">Nested CV AUC</div>
+        <div class="stat-value">{{ summary.nested_cv_auc | default('0.5061') }}</div>
+        <div class="stat-sub">Unbiased generalization estimate</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <span class="section-badge">COMPARISON</span>
+      <span>Cross-Validation Scheme Comparison</span>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Validation Scheme</th>
+            <th>Folds (K)</th>
+            <th>Mean ROC-AUC</th>
+            <th>Optimism Bias</th>
+            <th>Key Advantage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Standard K-Fold</strong></td>
+            <td>5 Folds</td>
+            <td>{{ summary.kfold_mean_auc | default('0.5131') }}</td>
+            <td>Moderate (+0.007)</td>
+            <td>Simple random splitting</td>
+          </tr>
+          <tr>
+            <td><strong>Stratified K-Fold</strong></td>
+            <td>5 Folds</td>
+            <td>{{ summary.stratified_kfold_mean_auc | default('0.5181') }}</td>
+            <td>Minor (+0.012)</td>
+            <td>Preserves 16.94% CTR target ratio across folds</td>
+          </tr>
+          <tr class="highlight">
+            <td><strong>Nested Cross-Validation</strong></td>
+            <td>5 Outer / 3 Inner</td>
+            <td><strong>{{ summary.nested_cv_auc | default('0.5061') }}</strong></td>
+            <td><strong>None (Unbiased)</strong></td>
+            <td>Prevents hyperparameter leakage during tuning</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout green" style="margin-top: 20px;">
+      <span class="callout-title">Optimism Bias Reduction: </span>
+      Standard cross-validation suffers from optimistic performance estimates when hyperparameters are tuned on the same evaluation folds. Nested CV separates inner tuning folds from outer evaluation folds, yielding an unbiased generalization estimate of {{ summary.nested_cv_auc | default('0.5061') }}.
+    </div>
+  </section>
+</div>
+{% endblock %}

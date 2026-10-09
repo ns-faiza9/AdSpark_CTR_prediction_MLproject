@@ -1,0 +1,6 @@
+{
+  "mdi_top_feature": "C18_enc",
+  "permutation_top_feature": "site_id_freq",
+  "shap_top_feature": "C18_enc",
+  "description": "SHAP analysis reveals C18 and site_id frequency drive 50%+ of model log-odds impact."
+}

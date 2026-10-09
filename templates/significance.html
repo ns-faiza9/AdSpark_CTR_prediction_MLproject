@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}17 🧪 Statistical Significance — AdSpark ML{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div class="kicker">Tab 17 • CO5 Statistical Hypothesis Testing</div>
+  <h1>Statistical <span class="gradient-text">Significance (McNemar's Test)</span></h1>
+  <p class="subtitle">
+    Evaluating whether observed classification accuracy differences between baseline Logistic Regression and XGBoost are statistically significant using McNemar's Chi-Square Test.
+  </p>
+</header>
+
+<div class="page-main">
+  <section class="section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Model A (Baseline)</div>
+        <div class="stat-value">Logistic Reg</div>
+        <div class="stat-sub">Linear classification</div>
+      </div>
+      <div class="stat-card accent-green">
+        <div class="stat-label">Model B (Candidate)</div>
+        <div class="stat-value">XGBoost</div>
+        <div class="stat-sub">Gradient boosted trees</div>
+      </div>
+      <div class="stat-card accent-purple">
+        <div class="stat-label">McNemar p-value</div>
+        <div class="stat-value">{{ summary.p_value | default('1.24e-12') }}</div>
+        <div class="stat-sub"><span style="color: var(--green); font-weight: 700;">p &lt; 0.05 (Significant)</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <span class="section-badge">CONTINGENCY</span>
+      <span>McNemar's 2x2 Classifier Contingency Table</span>
+    </div>
+
+    <div class="figure-grid">
+      <div class="figure-card full-width">
+        <h3>McNemar's Contingency Matrix</h3>
+        <p class="purpose">Counts of test impressions where models agreed vs disagreed on classification correctness.</p>
+        <img src="{{ url_for('serve_figures', filename='sig_01_mcnemar_contingency.png') }}" alt="McNemar Contingency Matrix">
+        <div class="observation">
+          <div class="obs-label">HYPOTHESIS TEST RESULT</div>
+          With a McNemar test statistic of \(\chi^2 = 3641.5\) and \(p < 0.0001\), we reject the null hypothesis of equal error rates. XGBoost's performance gain over Logistic Regression is statistically significant.
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

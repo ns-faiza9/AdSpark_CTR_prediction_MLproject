@@ -1,0 +1,8 @@
+{
+  "model_a": "Logistic Regression",
+  "model_b": "XGBoost Classifier",
+  "mcnemar_statistic": 3642.7584,
+  "p_value": 0.0,
+  "statistically_significant": true,
+  "conclusion": "XGBoost's performance improvement over Logistic Regression is statistically significant (p < 0.001)."
+}
