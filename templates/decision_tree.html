@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}Decision Tree — AdSpark CTR{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div class="kicker">Stage 08</div>
+  <h1><span class="gradient-text">Decision Tree</span></h1>
+  <p class="subtitle">
+    A <code>DecisionTreeClassifier</code> with balanced class weights trained on
+    the engineered features. The depth sweep reveals the bias-variance trade-off.
+  </p>
+</header>
+
+<div class="page-main page-enter">
+  <!-- Section 01: Performance -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-badge">01</span>Performance (depth = {{ summary.max_depth | default(5) }})</h2>
+    <div class="stats-grid">
+      <div class="stat-card accent-green">
+        <div class="stat-label">Testing Accuracy</div>
+        <div class="stat-value">{{ summary.test_accuracy }}%</div>
+        <div class="stat-sub">{{ "{:,}".format(summary.test_records) }} test records</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Training Accuracy</div>
+        <div class="stat-value">{{ summary.train_accuracy }}%</div>
+        <div class="stat-sub">{{ "{:,}".format(summary.train_records) }} training records</div>
+      </div>
+      <div class="stat-card accent-purple">
+        <div class="stat-label">ROC-AUC</div>
+        <div class="stat-value">{{ "%.4f"|format(summary.roc_auc) }}</div>
+        <div class="stat-sub">discrimination power</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Tree Nodes</div>
+        <div class="stat-value">{{ summary.n_nodes }}</div>
+        <div class="stat-sub">{{ summary.n_leaves }} leaves, depth {{ summary.max_depth }}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 02: Classification Report -->
+  {% if summary.classification_report %}
+  <section class="section">
+    <h2 class="section-title"><span class="section-badge">02</span>Classification Report</h2>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Class</th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F1-Score</th>
+            <th>Support</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cls, metrics in summary.classification_report.items() %}
+          <tr>
+            <td><code style="color: var(--blue); background: rgba(56, 189, 248, 0.1);">{{ cls }}</code></td>
+            <td>{{ "%.4f"|format(metrics.precision) }}</td>
+            <td>{{ "%.4f"|format(metrics.recall) }}</td>
+            <td>{{ "%.4f"|format(metrics.f1_score) }}</td>
+            <td>{{ "{:,}".format(metrics.support) }}</td>
+          </tr>
+          {% endfor %}
+          <tr class="highlight" style="background: rgba(52, 211, 153, 0.1);">
+            <td style="color: var(--green); font-weight: bold;">Test Accuracy</td>
+            <td colspan="4" style="color: var(--green); font-weight: bold;">{{ summary.test_accuracy }}%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Section 03: Depth Sweep -->
+  {% if summary.depth_sweep %}
+  <section class="section">
+    <h2 class="section-title"><span class="section-badge">03</span>Depth Sweep</h2>
+    <p class="section-desc">
+      Select a depth to see its metrics. The selected model uses <strong>depth = {{ summary.max_depth }}</strong>.
+    </p>
+
+    <!-- Tab selector -->
+    <div class="model-tabs" id="depthTabs" style="margin-bottom: 1rem; display: flex; gap: 8px; flex-wrap: wrap;">
+      {% for r in summary.depth_sweep %}
+      <button class="btn btn-outline {% if r.depth == summary.max_depth %}active{% endif %}" 
+              style="padding: 4px 12px; font-size: 0.85rem; border-radius: 20px;"
+              onclick="selectDepth({{ r.depth }})">
+        depth {{ r.depth }}
+      </button>
+      {% endfor %}
+    </div>
+
+    <!-- Active depth metrics -->
+    <div class="table-wrap">
+      <table class="data-table" id="depthTable">
+        <thead>
+          <tr>
+            <th>Depth</th>
+            <th>Train Accuracy</th>
+            <th>Test Accuracy</th>
+            <th>ROC-AUC</th>
+            <th>F1</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in summary.depth_sweep %}
+          <tr class="depth-row depth-{{ r.depth }} {% if r.depth == summary.max_depth %}highlight{% endif %}" 
+              style="{% if r.depth == summary.max_depth %}background: rgba(52, 211, 153, 0.1); color: var(--green); font-weight: bold;{% endif %}">
+            <td>{{ r.depth }}</td>
+            <td>{{ r.train_accuracy }}%</td>
+            <td>{{ r.test_accuracy }}%</td>
+            <td>{{ "%.4f"|format(r.roc_auc) }}</td>
+            <td>{{ "%.4f"|format(r.f1) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      function selectDepth(depth) {
+        // Highlight active tab
+        const buttons = document.querySelectorAll('#depthTabs button');
+        buttons.forEach(b => {
+          if (b.innerText.trim() === 'depth ' + depth) {
+            b.classList.add('active');
+            b.style.background = 'var(--accent)';
+            b.style.color = '#fff';
+            b.style.borderColor = 'var(--accent)';
+          } else {
+            b.classList.remove('active');
+            b.style.background = 'transparent';
+            b.style.color = 'var(--text-secondary)';
+            b.style.borderColor = 'var(--border)';
+          }
+        });
+
+        // Highlight table row
+        const rows = document.querySelectorAll('#depthTable .depth-row');
+        rows.forEach(r => {
+          if (r.classList.contains('depth-' + depth)) {
+            r.classList.add('highlight');
+            r.style.background = 'rgba(52, 211, 153, 0.1)';
+            r.style.color = 'var(--green)';
+            r.style.fontWeight = 'bold';
+          } else {
+            r.classList.remove('highlight');
+            r.style.background = 'transparent';
+            r.style.color = 'inherit';
+            r.style.fontWeight = 'normal';
+          }
+        });
+      }
+      
+      // Initialize active style for the default active tab
+      document.addEventListener("DOMContentLoaded", () => {
+         const activeBtn = document.querySelector('#depthTabs button.active');
+         if (activeBtn) {
+            activeBtn.style.background = 'var(--accent)';
+            activeBtn.style.color = '#fff';
+            activeBtn.style.borderColor = 'var(--accent)';
+         }
+      });
+    </script>
+  </section>
+  {% endif %}
+
+  <!-- Section 04: Model Diagnostics -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-badge">04</span>Model Diagnostics</h2>
+    <div class="figure-grid mt-3">
+      <div class="figure-card full-width">
+        <h3>Depth sweep — AUC and Accuracy</h3>
+        <p class="purpose">ROC-AUC and accuracy as a function of max_depth (1–10).</p>
+        <img src="{{ url_for('serve_figures', filename='dt_04_depth_vs_auc.png') }}" alt="Depth Sweep">
+        <div class="observation">
+          <div class="obs-label">OBSERVATION</div>
+          AUC stabilises around depth 5–6; deeper trees overfit the training set without improving test performance.
+        </div>
+      </div>
+    </div>
+    
+    <div class="figure-grid" style="margin-top: 1.5rem;">
+      <div class="figure-card full-width">
+        <h3>Tree structure (top 3 levels)</h3>
+        <p class="purpose">First 3 levels of the decision tree — shows the most important split decisions.</p>
+        <img src="{{ url_for('serve_figures', filename='dt_01_tree_visualization.png') }}" alt="Tree Visualization">
+        <div class="observation">
+          <div class="obs-label">OBSERVATION</div>
+          The root split is on the most discriminative feature; subsequent splits handle device and site context.
+        </div>
+      </div>
+      
+      <div class="figure-card">
+        <h3>Top 15 feature importances</h3>
+        <p class="purpose">Gini-based feature importances — which features the tree uses most.</p>
+        <img src="{{ url_for('serve_figures', filename='dt_02_feature_importance.png') }}" alt="Feature Importance">
+        <div class="observation">
+          <div class="obs-label">OBSERVATION</div>
+          Frequency-encoded identifiers and banner position dominate, consistent with the EDA and linear model findings.
+        </div>
+      </div>
+      
+      <div class="figure-card">
+        <h3>Confusion matrix (depth=5)</h3>
+        <p class="purpose">True/false positives and negatives at the 0.5 threshold.</p>
+        <!-- The original zip had this image, if missing in flask app, it will just show alt text or broken img, but we assume it exists -->
+        <img src="{{ url_for('serve_figures', filename='dt_03_confusion_matrix.png') }}" alt="Confusion Matrix" onerror="this.style.display='none';">
+        <div class="observation">
+          <div class="obs-label">OBSERVATION</div>
+          Balanced class weights push the tree to recall more clicks at the cost of precision.
+        </div>
+      </div>
+    </div>
+
+    <!-- Predictive features chip list -->
+    {% if summary.top_features %}
+    <div style="margin-top: 1.5rem;">
+      <div class="section-desc" style="margin-bottom: 0.75rem;">
+        <strong>Predictive features ({{ summary.n_features }})</strong>
+      </div>
+      <div class="chip-row">
+        {% for f in summary.top_features.keys() %}
+        <span class="chip">{{ f }}</span>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </section>
+
+</div>
+{% endblock %}

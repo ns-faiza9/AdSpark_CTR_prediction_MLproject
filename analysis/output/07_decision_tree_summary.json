@@ -1,0 +1,122 @@
+{
+  "max_depth": 5,
+  "n_features": 23,
+  "train_records": 808579,
+  "test_records": 202145,
+  "train_accuracy": 64.12,
+  "test_accuracy": 63.88,
+  "roc_auc": 0.6681,
+  "f1": 0.361,
+  "precision": 0.2577,
+  "recall": 0.6023,
+  "n_leaves": 32,
+  "n_nodes": 63,
+  "classification_report": {
+    "No Click": {
+      "precision": 0.8885,
+      "recall": 0.6463,
+      "f1_score": 0.7483,
+      "support": 167903
+    },
+    "Click": {
+      "precision": 0.2577,
+      "recall": 0.6023,
+      "f1_score": 0.361,
+      "support": 34242
+    }
+  },
+  "depth_sweep": [
+    {
+      "depth": 1,
+      "train_accuracy": 75.83,
+      "test_accuracy": 75.64,
+      "roc_auc": 0.5767,
+      "f1": 0.2977
+    },
+    {
+      "depth": 2,
+      "train_accuracy": 75.83,
+      "test_accuracy": 75.64,
+      "roc_auc": 0.6009,
+      "f1": 0.2977
+    },
+    {
+      "depth": 3,
+      "train_accuracy": 38.95,
+      "test_accuracy": 38.94,
+      "roc_auc": 0.6293,
+      "f1": 0.3243
+    },
+    {
+      "depth": 4,
+      "train_accuracy": 62.16,
+      "test_accuracy": 61.96,
+      "roc_auc": 0.6552,
+      "f1": 0.3529
+    },
+    {
+      "depth": 5,
+      "train_accuracy": 64.12,
+      "test_accuracy": 63.88,
+      "roc_auc": 0.6681,
+      "f1": 0.361
+    },
+    {
+      "depth": 6,
+      "train_accuracy": 64.7,
+      "test_accuracy": 64.37,
+      "roc_auc": 0.679,
+      "f1": 0.3687
+    },
+    {
+      "depth": 7,
+      "train_accuracy": 65.4,
+      "test_accuracy": 65.07,
+      "roc_auc": 0.6861,
+      "f1": 0.372
+    },
+    {
+      "depth": 8,
+      "train_accuracy": 64.04,
+      "test_accuracy": 63.77,
+      "roc_auc": 0.6926,
+      "f1": 0.3756
+    },
+    {
+      "depth": 9,
+      "train_accuracy": 59.5,
+      "test_accuracy": 59.28,
+      "roc_auc": 0.7005,
+      "f1": 0.375
+    },
+    {
+      "depth": 10,
+      "train_accuracy": 64.49,
+      "test_accuracy": 64.21,
+      "roc_auc": 0.7083,
+      "f1": 0.3864
+    }
+  ],
+  "top_features": {
+    "C18_enc": 0.5402,
+    "site_id_freq": 0.1453,
+    "app_id_freq": 0.1081,
+    "C16_enc": 0.054,
+    "C14_enc": 0.0479,
+    "C17_enc": 0.0317,
+    "device_id_freq": 0.0207,
+    "app_category_enc": 0.0188,
+    "site_domain_freq": 0.0088,
+    "device_conn_type_enc": 0.0083,
+    "C1_enc": 0.0047,
+    "device_type_enc": 0.0037,
+    "C19_enc": 0.003,
+    "site_category_enc": 0.0019,
+    "C20_enc": 0.0019,
+    "hour_of_day": 0.0009,
+    "day_of_week": 0.0,
+    "app_domain_freq": 0.0,
+    "banner_pos_enc": 0.0,
+    "device_model_freq": 0.0
+  }
+}

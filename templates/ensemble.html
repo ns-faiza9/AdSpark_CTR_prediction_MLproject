@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block title %}Ensemble Learning — AdSpark CTR{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div class="kicker">Stage 08</div>
+  <h1><span class="gradient-text">Ensemble Learning</span></h1>
+  <p class="subtitle">
+    Evaluating tree-based and ensemble algorithms for CTR prediction.
+    Comparing <strong>Bagging — Random Forest</strong>, <strong>AdaBoost</strong>,
+    <strong>Gradient Boosting</strong>, <strong>LightGBM</strong>, and <strong>XGBoost</strong>.
+  </p>
+</header>
+
+<div class="page-main page-enter">
+
+  <!-- Model selector tabs -->
+  <section class="section">
+    <div class="model-tabs" id="ensembleTabs" style="margin-bottom: 1.5rem; display: flex; gap: 8px; flex-wrap: wrap;">
+      {% for name, m in summary.models.items() %}
+      <button class="btn btn-outline {% if loop.first %}active{% endif %}" 
+              style="padding: 8px 16px; font-size: 0.9rem; border-radius: 20px; font-weight: 600;"
+              onclick="selectEnsemble('{{ name }}')">
+        {% if name == summary.best_model %}🏆 {% endif %}{{ name }}
+      </button>
+      {% endfor %}
+    </div>
+
+    <!-- Stats grid -->
+    <div class="stats-grid">
+      <div class="stat-card accent-green">
+        <div class="stat-label">Testing Accuracy</div>
+        <div class="stat-value" id="testAcc">--</div>
+        <div class="stat-sub" id="testRecords">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Training Accuracy</div>
+        <div class="stat-value" id="trainAcc">--</div>
+        <div class="stat-sub" id="trainRecords">--</div>
+      </div>
+      <div class="stat-card accent-purple">
+        <div class="stat-label">Algorithm Family</div>
+        <div class="stat-value" id="algoFamily" style="font-size: 1.4rem;">--</div>
+        <div class="stat-sub" id="algoName">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Feature Count</div>
+        <div class="stat-value" id="featureCount">--</div>
+        <div class="stat-sub">Engineered predictors</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Classification Report -->
+  <section class="section" id="reportSection">
+    <h2 class="section-title"><span class="section-badge">02</span>Classification Report</h2>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Class</th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F1-Score</th>
+            <th>Support</th>
+          </tr>
+        </thead>
+        <tbody id="reportTbody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Visual Diagnostics -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-badge">03</span>Model Diagnostics</h2>
+    
+    <div class="figure-grid mt-3">
+      <div class="figure-card">
+        <h3>ROC Curve Comparison</h3>
+        <p class="purpose">Trade-off between true positive rate and false positive rate.</p>
+        <img id="rocImg" src="{{ url_for('serve_figures', filename='ens_01_roc_comparison.png') }}" alt="ROC Curve">
+        <div class="observation">
+          <div class="obs-label">OBSERVATION</div>
+          <span id="rocObs">--</span>
+        </div>
+      </div>
+      
+      <div class="figure-card">
+        <h3>Top Feature Importances (Random Forest)</h3>
+        <p class="purpose">Gini-based feature importances — which features the ensemble uses most.</p>
+        <img id="featImg" src="{{ url_for('serve_figures', filename='ens_04_feature_importance_rf.png') }}" alt="Feature Importance">
+        <div class="observation">
+          <div class="obs-label">OBSERVATION</div>
+          Tree-based ensembles rely heavily on device characteristics and site/app context interactions.
+        </div>
+      </div>
+      
+      <div class="figure-card full-width">
+        <h3>Confusion Matrix (Best Model)</h3>
+        <p class="purpose">True/false positives and negatives at the 0.5 threshold.</p>
+        <img id="confImg" src="{{ url_for('serve_figures', filename='ens_05_confusion_matrix_best.png') }}" alt="Confusion Matrix">
+        <div class="observation">
+          <div class="obs-label">OBSERVATION</div>
+          Gradient boosting methods (XGBoost/LightGBM) maintain better precision/recall balance than standard bagging.
+        </div>
+      </div>
+    </div>
+
+    <!-- Predictive features chip list -->
+    <div style="margin-top: 1.5rem;" id="featuresSection">
+      <div class="section-desc" style="margin-bottom: 0.75rem;">
+        <strong id="topFeatLabel">Predictive features</strong>
+      </div>
+      <div class="chip-row" id="topFeatChips">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Embed models JSON data for JS -->
+<script id="models-data" type="application/json">
+  {{ summary.models | tojson }}
+</script>
+
+<script>
+  let models = {};
+  
+  function init() {
+    try {
+      const dataStr = document.getElementById('models-data').textContent;
+      models = JSON.parse(dataStr);
+      
+      // Select first model by default
+      const firstModel = Object.keys(models)[0];
+      if (firstModel) selectEnsemble(firstModel);
+    } catch (e) {
+      console.error("Error loading model data:", e);
+    }
+  }
+
+  function selectEnsemble(name) {
+    const data = models[name];
+    if (!data) return;
+
+    // Highlight active tab
+    const buttons = document.querySelectorAll('#ensembleTabs button');
+    buttons.forEach(b => {
+      // Remove 🏆 symbol for comparison if it exists
+      const btnText = b.innerText.replace('🏆', '').trim();
+      if (btnText === name) {
+        b.classList.add('active');
+        b.style.background = 'var(--accent)';
+        b.style.color = '#fff';
+        b.style.borderColor = 'var(--accent)';
+      } else {
+        b.classList.remove('active');
+        b.style.background = 'transparent';
+        b.style.color = 'var(--text-secondary)';
+        b.style.borderColor = 'var(--border)';
+      }
+    });
+
+    // Update Stats
+    document.getElementById('testAcc').innerText = data.test_accuracy ? data.test_accuracy.toFixed(2) + '%' : '--';
+    document.getElementById('testRecords').innerText = data.test_records ? data.test_records.toLocaleString() + ' test records' : '--';
+    document.getElementById('trainAcc').innerText = data.train_accuracy ? data.train_accuracy.toFixed(2) + '%' : '--';
+    document.getElementById('trainRecords').innerText = data.train_records ? data.train_records.toLocaleString() + ' training records' : '--';
+    document.getElementById('algoFamily').innerText = data.algorithm_family || '--';
+    document.getElementById('algoName').innerText = name;
+    document.getElementById('featureCount').innerText = data.n_features || '--';
+
+    // Update Table
+    const tbody = document.getElementById('reportTbody');
+    tbody.innerHTML = '';
+    if (data.classification_report) {
+      for (const [cls, metrics] of Object.entries(data.classification_report)) {
+        tbody.innerHTML += `
+          <tr>
+            <td><code style="color: var(--blue); background: rgba(56, 189, 248, 0.1);">${cls}</code></td>
+            <td>${metrics.precision.toFixed(4)}</td>
+            <td>${metrics.recall.toFixed(4)}</td>
+            <td>${metrics.f1_score.toFixed(4)}</td>
+            <td>${metrics.support.toLocaleString()}</td>
+          </tr>
+        `;
+      }
+      tbody.innerHTML += `
+        <tr class="highlight" style="background: rgba(52, 211, 153, 0.1);">
+          <td style="color: var(--green); font-weight: bold;">Test Accuracy</td>
+          <td colspan="4" style="color: var(--green); font-weight: bold;">${data.test_accuracy.toFixed(2)}%</td>
+        </tr>
+      `;
+    }
+
+    // Update Images
+    document.getElementById('rocObs').innerText = `ROC-AUC = ${data.roc_auc.toFixed(4)}. Evaluates ranking separation.`;
+
+    // Chips
+    const chipRow = document.getElementById('topFeatChips');
+    chipRow.innerHTML = '';
+    if (data.top_features) {
+      for (const f of Object.keys(data.top_features)) {
+        chipRow.innerHTML += `<span class="chip">${f}</span>`;
+      }
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+</script>
+{% endblock %}

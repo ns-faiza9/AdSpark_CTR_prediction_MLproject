@@ -1,0 +1,245 @@
+{
+  "models": {
+    "Random Forest": {
+      "algorithm_family": "Bagging",
+      "n_features": 23,
+      "train_records": 808579,
+      "test_records": 202145,
+      "train_accuracy": 64.46,
+      "test_accuracy": 64.01,
+      "roc_auc": 0.7225,
+      "f1": 0.3939,
+      "precision": 0.2755,
+      "recall": 0.6904,
+      "classification_report": {
+        "No Click": {
+          "precision": 0.9089,
+          "recall": 0.6298,
+          "f1_score": 0.744,
+          "support": 167903
+        },
+        "Click": {
+          "precision": 0.2755,
+          "recall": 0.6904,
+          "f1_score": 0.3939,
+          "support": 34242
+        }
+      },
+      "top_features": {
+        "C18_enc": 0.1525,
+        "site_id_freq": 0.0976,
+        "app_id_freq": 0.0903,
+        "site_domain_freq": 0.0829,
+        "C19_enc": 0.0795,
+        "C21_enc": 0.0683,
+        "app_category_enc": 0.0509,
+        "C17_enc": 0.0493,
+        "C14_enc": 0.0489,
+        "C16_enc": 0.0474,
+        "C20_enc": 0.0317,
+        "app_domain_freq": 0.0297,
+        "C15_enc": 0.0258,
+        "device_conn_type_enc": 0.0241,
+        "site_category_enc": 0.0218,
+        "device_model_freq": 0.0208,
+        "device_id_freq": 0.0197,
+        "banner_pos_enc": 0.0132,
+        "device_ip_freq": 0.0114,
+        "hour_of_day": 0.011
+      }
+    },
+    "AdaBoost": {
+      "algorithm_family": "Boosting",
+      "n_features": 23,
+      "train_records": 808579,
+      "test_records": 202145,
+      "train_accuracy": 75.83,
+      "test_accuracy": 75.64,
+      "roc_auc": 0.5767,
+      "f1": 0.2977,
+      "precision": 0.2909,
+      "recall": 0.3049,
+      "classification_report": {
+        "No Click": {
+          "precision": 0.8568,
+          "recall": 0.8484,
+          "f1_score": 0.8526,
+          "support": 167903
+        },
+        "Click": {
+          "precision": 0.2909,
+          "recall": 0.3049,
+          "f1_score": 0.2977,
+          "support": 34242
+        }
+      },
+      "top_features": {
+        "C18_enc": 0.9092,
+        "C16_enc": 0.0908,
+        "hour_of_day": 0.0,
+        "site_domain_freq": 0.0,
+        "app_id_freq": 0.0,
+        "day_of_week": 0.0,
+        "site_id_freq": 0.0,
+        "device_id_freq": 0.0,
+        "app_domain_freq": 0.0,
+        "device_ip_freq": 0.0,
+        "device_model_freq": 0.0,
+        "site_category_enc": 0.0,
+        "app_category_enc": 0.0,
+        "C1_enc": 0.0,
+        "banner_pos_enc": 0.0,
+        "device_conn_type_enc": 0.0,
+        "device_type_enc": 0.0,
+        "C15_enc": 0.0,
+        "C14_enc": 0.0,
+        "C17_enc": 0.0
+      }
+    },
+    "Gradient Boosting": {
+      "algorithm_family": "Boosting",
+      "n_features": 23,
+      "train_records": 808579,
+      "test_records": 202145,
+      "train_accuracy": 83.4,
+      "test_accuracy": 83.33,
+      "roc_auc": 0.7287,
+      "f1": 0.1031,
+      "precision": 0.5828,
+      "recall": 0.0565,
+      "classification_report": {
+        "No Click": {
+          "precision": 0.8375,
+          "recall": 0.9917,
+          "f1_score": 0.9081,
+          "support": 167903
+        },
+        "Click": {
+          "precision": 0.5828,
+          "recall": 0.0565,
+          "f1_score": 0.1031,
+          "support": 34242
+        }
+      },
+      "top_features": {
+        "C18_enc": 0.2469,
+        "site_id_freq": 0.11,
+        "C16_enc": 0.1022,
+        "C19_enc": 0.0824,
+        "site_domain_freq": 0.0767,
+        "app_id_freq": 0.0688,
+        "C21_enc": 0.0479,
+        "C17_enc": 0.0351,
+        "C14_enc": 0.0338,
+        "device_id_freq": 0.0307,
+        "site_category_enc": 0.0298,
+        "app_category_enc": 0.0243,
+        "device_model_freq": 0.0224,
+        "C20_enc": 0.0172,
+        "app_domain_freq": 0.0163,
+        "banner_pos_enc": 0.0152,
+        "hour_of_day": 0.0099,
+        "device_ip_freq": 0.0081,
+        "C1_enc": 0.0062,
+        "device_conn_type_enc": 0.0061
+      }
+    },
+    "LightGBM": {
+      "algorithm_family": "Boosting",
+      "n_features": 23,
+      "train_records": 808579,
+      "test_records": 202145,
+      "train_accuracy": 83.47,
+      "test_accuracy": 83.39,
+      "roc_auc": 0.7391,
+      "f1": 0.1063,
+      "precision": 0.5999,
+      "recall": 0.0583,
+      "classification_report": {
+        "No Click": {
+          "precision": 0.8378,
+          "recall": 0.9921,
+          "f1_score": 0.9084,
+          "support": 167903
+        },
+        "Click": {
+          "precision": 0.5999,
+          "recall": 0.0583,
+          "f1_score": 0.1063,
+          "support": 34242
+        }
+      },
+      "top_features": {
+        "site_id_freq": 498,
+        "app_id_freq": 423,
+        "site_domain_freq": 407,
+        "C14_enc": 316,
+        "device_model_freq": 292,
+        "C17_enc": 271,
+        "C21_enc": 224,
+        "device_ip_freq": 222,
+        "app_domain_freq": 213,
+        "site_category_enc": 192,
+        "C19_enc": 190,
+        "app_category_enc": 178,
+        "device_id_freq": 167,
+        "C18_enc": 148,
+        "hour_of_day": 133,
+        "C20_enc": 133,
+        "banner_pos_enc": 123,
+        "device_conn_type_enc": 83,
+        "day_of_week": 71,
+        "C1_enc": 68
+      }
+    },
+    "XGBoost": {
+      "algorithm_family": "Boosting",
+      "n_features": 23,
+      "train_records": 808579,
+      "test_records": 202145,
+      "train_accuracy": 83.5,
+      "test_accuracy": 83.41,
+      "roc_auc": 0.7397,
+      "f1": 0.1093,
+      "precision": 0.6046,
+      "recall": 0.0601,
+      "classification_report": {
+        "No Click": {
+          "precision": 0.8381,
+          "recall": 0.992,
+          "f1_score": 0.9085,
+          "support": 167903
+        },
+        "Click": {
+          "precision": 0.6046,
+          "recall": 0.0601,
+          "f1_score": 0.1093,
+          "support": 34242
+        }
+      },
+      "top_features": {
+        "C18_enc": 0.295199990272522,
+        "C16_enc": 0.19769999384880066,
+        "C19_enc": 0.055799998342990875,
+        "site_id_freq": 0.043299999088048935,
+        "C1_enc": 0.03799999877810478,
+        "app_id_freq": 0.03739999979734421,
+        "site_domain_freq": 0.03400000184774399,
+        "C21_enc": 0.03359999880194664,
+        "app_category_enc": 0.032099999487400055,
+        "device_id_freq": 0.030500000342726707,
+        "site_category_enc": 0.02669999934732914,
+        "C17_enc": 0.02539999969303608,
+        "banner_pos_enc": 0.02160000056028366,
+        "device_type_enc": 0.020899999886751175,
+        "C14_enc": 0.020400000736117363,
+        "device_conn_type_enc": 0.01940000057220459,
+        "app_domain_freq": 0.017799999564886093,
+        "C20_enc": 0.011599999852478504,
+        "device_model_freq": 0.009700000286102295,
+        "C15_enc": 0.009499999694526196
+      }
+    }
+  },
+  "best_model": "XGBoost"
+}
