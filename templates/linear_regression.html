@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}Linear Regression — AdSpark CTR{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div class="kicker">Stage 04</div>
+  <h1><span class="gradient-text">Linear Regression Analysis</span></h1>
+  <p class="subtitle">
+    Predicting continuous placement metrics and aggregate rates using engineered features. Evaluated strictly as a regression task.
+  </p>
+</header>
+
+<div class="page-main page-enter">
+
+  <section class="section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">RMSE</div>
+        <div class="stat-value">{{ "%.4f"|format(summary.rmse) }}</div>
+        <div class="stat-sub">multivariate error</div>
+      </div>
+      <div class="stat-card accent-orange">
+        <div class="stat-label">MSE</div>
+        <div class="stat-value">{{ "%.4f"|format(summary.mse) }}</div>
+        <div class="stat-sub">mean squared error</div>
+      </div>
+      <div class="stat-card accent-purple">
+        <div class="stat-label">R²</div>
+        <div class="stat-value">{{ "%.4f"|format(summary.r2) }}</div>
+        <div class="stat-sub">variance explained</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 1: Simple Linear Regression -->
+  <section class="section">
+    <h2 class="section-title">
+      <span class="section-badge">01</span>
+      <span id="slrTitle">1. Simple Linear Regression: Click Rate ~ C18_enc</span>
+    </h2>
+    <p class="section-desc" style="margin-bottom: 1rem;">
+      Evaluating the direct linear relationship between overall predictor signal and placement click rate.
+    </p>
+
+    <!-- Regularization penalty dropdown -->
+  <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+    <label style="font-weight: 600; color: var(--text-secondary); font-size: 0.9rem;">
+      Regularization Penalty:
+    </label>
+    <select id="regSelect" onchange="switchPenalty()" style="padding: 0.4rem 0.8rem; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); color: var(--text-primary); font-size: 0.875rem; font-weight: 500; cursor: pointer;">
+      <option value="L2 (Ridge Regression)">L2 (Ridge Regression)</option>
+      <option value="L1 (Lasso Regression)">L1 (Lasso Regression)</option>
+      <option value="None (Ordinary Least Squares)">None (Ordinary Least Squares)</option>
+    </select>
+    <span style="margin-left: auto; color: var(--text-muted); font-size: 0.8rem;">
+      Active Model: <strong id="activeModelLabel">L2 (Ridge Regression)</strong>
+    </span>
+  </div>
+
+
+    <!-- Equation Box -->
+    <div class="callout blue" id="equationBox" style="margin-bottom: 1.5rem; font-family: monospace; font-size: 0.9rem; font-weight: 600;">
+      Click Rate = ...
+    </div>
+
+    <!-- Two-column layout: Left = Table, Right = Fitted Line Graph -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.75rem; align-items: start; margin-bottom: 1.5rem;">
+
+      <!-- Left Column: Model Performance Metrics Table -->
+      <div>
+        <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-secondary);">
+          Model Performance Metrics
+        </h3>
+        <div class="table-wrap">
+          <table class="data-table">
+            <tbody>
+              <tr>
+                <td><strong>Training MSE</strong></td>
+                <td id="trainMse">--</td>
+              </tr>
+              <tr>
+                <td><strong>Testing MSE</strong></td>
+                <td id="testMse">--</td>
+              </tr>
+              <tr>
+                <td><strong>Training R² Score</strong></td>
+                <td id="trainR2">--</td>
+              </tr>
+              <tr class="highlight" style="background: rgba(52, 211, 153, 0.1);">
+                <td style="color: var(--green);"><strong>Testing R² Score</strong></td>
+                <td style="color: var(--green);"><strong id="testR2">--</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Sample Size</strong></td>
+                <td id="sampleSize">808,579 records</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Right Column: Fitted Regression Line Scatter Plot -->
+      <div>
+        <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-secondary); text-align: center;">
+          Fitted Regression Line
+        </h3>
+        <div class="figure-card" style="margin: 0; padding: 10px;">
+          <img id="fittedFigure" src="" alt="Fitted Regression Line" style="width: 100%; border-radius: 8px;">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Multivariate Linear Regression -->
+  <section class="section">
+    <h2 class="section-title">
+      <span class="section-badge">02</span>
+      2. Multivariate Linear Regression
+    </h2>
+    <p class="section-desc" style="margin-bottom: 1rem;">
+      Full OLS model utilizing all engineered features to capture complex interactions, evaluated with comprehensive metrics and learning curves.
+    </p>
+    <div class="figure-grid mt-3">
+      <div class="figure-card full-width">
+        <h3>Model Coefficients</h3>
+        <p class="purpose">Magnitude of OLS feature coefficients.</p>
+        <img src="{{ url_for('serve_figures', filename='lr_01_coefficients.png') }}" alt="Learning Curve">
+        <div class="observation">
+          <div class="obs-label">OBSERVATION</div>
+          High initial bias resolves as training size increases; validation curve converges closely, indicating a well-fitted linear baseline without severe overfitting.
+        </div>
+      </div>
+      <div class="figure-card full-width">
+        <h3>Prediction Distribution</h3>
+        <p class="purpose">Distribution of predicted CTR probabilities vs actual clicks.</p>
+        <img src="{{ url_for('serve_figures', filename='lr_02_prediction_distribution.png') }}" alt="Residuals">
+        <div class="observation">
+          <div class="obs-label">OBSERVATION</div>
+          Residuals are somewhat clustered due to the binary nature of the target variable, hinting at the necessity of a Logistic model.
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Embed penalties JSON data for JS -->
+<script id="penalties-data" type="application/json">
+  {{ summary.penalties | tojson }}
+</script>
+
+<script>
+  let penalties = {};
+  
+  function init() {
+    try {
+      const dataStr = document.getElementById('penalties-data').textContent;
+      penalties = JSON.parse(dataStr);
+      switchPenalty(); // Initialize with first selection
+    } catch (e) {
+      console.error("Error loading penalty data:", e);
+    }
+  }
+
+  function switchPenalty() {
+    const select = document.getElementById('regSelect');
+    const selected = select.value;
+    document.getElementById('activeModelLabel').innerText = selected;
+
+    const data = penalties[selected];
+    if (!data) return;
+
+    document.getElementById('slrTitle').innerText = `1. Simple Linear Regression: Click Rate ~ ${data.feature || 'Feature'}`;
+    document.getElementById('equationBox').innerText = data.equation;
+
+    document.getElementById('trainMse').innerText = data.train_mse ? data.train_mse.toFixed(5) : '--';
+    document.getElementById('testMse').innerText = data.test_mse ? data.test_mse.toFixed(5) : '--';
+    document.getElementById('trainR2').innerText = data.train_r2 ? data.train_r2.toFixed(4) : '--';
+    document.getElementById('testR2').innerText = data.test_r2 ? data.test_r2.toFixed(4) : '--';
+    document.getElementById('sampleSize').innerText = data.sample_size ? data.sample_size.toLocaleString() + ' records' : '--';
+
+    const figPath = "{{ url_for('serve_figures', filename='') }}" + data.figure;
+    document.getElementById('fittedFigure').src = figPath;
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+</script>
+{% endblock %}

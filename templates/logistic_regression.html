@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}Logistic Regression — AdSpark CTR{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div class="kicker">Stage 05</div>
+  <h1><span class="gradient-text">Logistic Regression</span></h1>
+  <p class="subtitle">
+    Binary classification predicting click vs no-click using preprocessed features, assessment scores, and regularization. Includes threshold optimization to maximize F1-score on imbalanced data.
+  </p>
+</header>
+
+<div class="page-main page-enter">
+
+  <!-- Section 01: Performance -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-badge">01</span>Performance</h2>
+    <div class="stats-grid">
+      <div class="stat-card accent-green">
+        <div class="stat-label">Testing Accuracy</div>
+        <div class="stat-value">{{ "%.2f"|format(summary.test_accuracy * 100 if summary.test_accuracy <= 1 else summary.test_accuracy) }}%</div>
+        <div class="stat-sub">Threshold: {{ "%.2f"|format(summary.best_threshold | default(0.5)) }}</div>
+      </div>
+      <div class="stat-card accent-orange">
+        <div class="stat-label">Optimal Threshold</div>
+        <div class="stat-value">{{ "%.3f"|format(summary.best_threshold | default(0.5)) }}</div>
+        <div class="stat-sub">Maximizing F1-score</div>
+      </div>
+      <div class="stat-card accent-purple">
+        <div class="stat-label">PR-AUC</div>
+        <div class="stat-value">{{ "%.4f"|format(summary.pr_auc | default(0)) }}</div>
+        <div class="stat-sub">Precision-Recall Curve Area</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">ROC-AUC</div>
+        <div class="stat-value">{{ "%.4f"|format(summary.roc_auc | default(0)) }}</div>
+        <div class="stat-sub">Discrimination Power</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 02: Classification Report -->
+  {% if summary.classification_report %}
+  <section class="section">
+    <h2 class="section-title"><span class="section-badge">02</span>Classification Report</h2>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Class</th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F1-Score</th>
+            <th>Support</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cls, metrics in summary.classification_report.items() %}
+          <tr>
+            <td><code style="color: var(--blue); background: rgba(56, 189, 248, 0.1);">{{ cls }}</code></td>
+            <td>{{ "%.4f"|format(metrics.precision) }}</td>
+            <td>{{ "%.4f"|format(metrics.recall) }}</td>
+            <td>{{ "%.4f"|format(metrics.f1_score) }}</td>
+            <td>{{ "{:,}".format(metrics.support) }}</td>
+          </tr>
+          {% endfor %}
+          <tr class="highlight" style="background: rgba(52, 211, 153, 0.1);">
+            <td style="color: var(--green); font-weight: bold;">Test Accuracy</td>
+            <td colspan="4" style="color: var(--green); font-weight: bold;">{{ "%.2f"|format(summary.test_accuracy * 100 if summary.test_accuracy <= 1 else summary.test_accuracy) }}%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Section 03: Feature Scaling Comparison -->
+  {% if summary.scaling_comparison %}
+  <section class="section">
+    <h2 class="section-title"><span class="section-badge">03</span>Feature Scaling Impact</h2>
+    <p class="section-desc">Comparing Logistic Regression performance before and after standardizing features.</p>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Scaling Method</th>
+            <th>Train Accuracy</th>
+            <th>Test Accuracy</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for method, m in summary.scaling_comparison.items() %}
+          <tr class="{% if loop.last %}highlight{% endif %}" style="{% if loop.last %}background: rgba(52, 211, 153, 0.1); color: var(--green); font-weight: bold;{% endif %}">
+            <td>{{ method }}</td>
+            <td>{{ m.train_accuracy }}%</td>
+            <td>{{ m.test_accuracy }}%</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Section 04: Visual Diagnostics -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-badge">04</span>Visual Diagnostics</h2>
+    <div class="figure-grid mt-3">
+      <div class="figure-card">
+        <h3>ROC Curve</h3>
+        <p class="purpose">Trade-off between true positive rate and false positive rate.</p>
+        <img src="{{ url_for('serve_figures', filename='logreg_01_roc_curve.png') }}" alt="ROC Curve">
+        <div class="observation">
+          <div class="obs-label">OBSERVATION</div>
+          The AUC of {{ "%.4f"|format(summary.roc_auc) }} demonstrates moderate separation ability beyond random guessing (0.5).
+        </div>
+      </div>
+      
+      <div class="figure-card">
+        <h3>Probability Distribution</h3>
+        <p class="purpose">Distribution of predicted probabilities for positive and negative classes.</p>
+        <img src="{{ url_for('serve_figures', filename='logreg_03_probability_distribution.png') }}" alt="Coefficients">
+        <div class="observation">
+          <div class="obs-label">OBSERVATION</div>
+          Device type and specific site categories possess the strongest positive/negative log-odds impact on CTR.
+        </div>
+      </div>
+      
+      <div class="figure-card full-width">
+        <h3>Confusion Matrix</h3>
+        <p class="purpose">Classification outcomes at the default 0.5 decision boundary.</p>
+        <img src="{{ url_for('serve_figures', filename='logreg_02_confusion_matrix.png') }}" alt="Confusion Matrix">
+        <div class="observation">
+          <div class="obs-label">OBSERVATION</div>
+          Class imbalance heavily skews the boundary; a tuned threshold is essential for practical deployment.
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

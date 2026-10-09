@@ -1,0 +1,39 @@
+{
+  "regression_view": {
+    "Lasso (L1)": {
+      "mse": 0.1348443178674402,
+      "rmse": 0.3672115437556943,
+      "n_nonzero_coefs": 19
+    },
+    "Ridge (L2)": {
+      "mse": 0.1347629790221724,
+      "rmse": 0.36710077502257116,
+      "n_nonzero_coefs": 23
+    },
+    "Elastic Net": {
+      "mse": 0.13479739949671274,
+      "rmse": 0.36714765353562145,
+      "n_nonzero_coefs": 20
+    }
+  },
+  "classification_view": {
+    "LogReg L1": {
+      "log_loss": 0.6566281488632589,
+      "roc_auc": 0.6468257504729513,
+      "f1": 0.33840709642256256,
+      "n_nonzero_coefs": 23
+    },
+    "LogReg L2": {
+      "log_loss": 0.6565933848461633,
+      "roc_auc": 0.6468373512938287,
+      "f1": 0.3382808059117034,
+      "n_nonzero_coefs": 23
+    },
+    "LogReg ElasticNet": {
+      "log_loss": 0.6566278027195539,
+      "roc_auc": 0.6468268349462885,
+      "f1": 0.33840733689856467,
+      "n_nonzero_coefs": 23
+    }
+  }
+}

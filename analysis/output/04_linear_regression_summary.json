@@ -1,0 +1,54 @@
+{
+  "mse": 0.13476622573311117,
+  "rmse": 0.36710519709357314,
+  "mae": 0.269699111917904,
+  "r2": 0.042167664992606047,
+  "log_loss": 0.4354841983497158,
+  "accuracy": 0.8305275915803013,
+  "precision": 0.05555555555555555,
+  "recall": 2.9203901641259272e-05,
+  "f1": 5.837711617046118e-05,
+  "n_train": 808579,
+  "n_test": 202145,
+  "penalties": {
+    "None (Ordinary Least Squares)": {
+      "label": "None (Ordinary Least Squares)",
+      "feature": "C18_enc",
+      "intercept": 0.2551,
+      "slope": -0.0622,
+      "equation": "Click Rate = 0.2551 + -0.0622 * C18_enc",
+      "train_mse": 0.13792,
+      "test_mse": 0.13798,
+      "train_r2": 0.0198,
+      "test_r2": 0.0194,
+      "sample_size": 808579,
+      "figure": "lr_fitted_ols.png"
+    },
+    "L2 (Ridge Regression)": {
+      "label": "L2 (Ridge Regression)",
+      "feature": "C18_enc",
+      "intercept": 0.2551,
+      "slope": -0.0622,
+      "equation": "Click Rate = 0.2551 + -0.0622 * C18_enc",
+      "train_mse": 0.13792,
+      "test_mse": 0.13798,
+      "train_r2": 0.0198,
+      "test_r2": 0.0194,
+      "sample_size": 808579,
+      "figure": "lr_fitted_ridge.png"
+    },
+    "L1 (Lasso Regression)": {
+      "label": "L1 (Lasso Regression)",
+      "feature": "C18_enc",
+      "intercept": 0.2531,
+      "slope": -0.0608,
+      "equation": "Click Rate = 0.2531 + -0.0608 * C18_enc",
+      "train_mse": 0.13792,
+      "test_mse": 0.13798,
+      "train_r2": 0.0198,
+      "test_r2": 0.0194,
+      "sample_size": 808579,
+      "figure": "lr_fitted_lasso.png"
+    }
+  }
+}

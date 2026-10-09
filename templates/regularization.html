@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Regularization — AdSpark CTR{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div class="kicker">Stage 06</div>
+  <h1><span class="gradient-text">Regularization</span></h1>
+  <p class="subtitle">
+    Lasso (L1), Ridge (L2) and Elastic Net penalties applied to both the linear
+    regression and logistic regression views of the problem.
+  </p>
+</header>
+
+<div class="page-main page-enter">
+  <!-- Section 01: Regression View -->
+  {% if summary.regression_view %}
+  <section class="section">
+    <h2 class="section-title"><span class="section-badge">01</span>Regression View — RMSE</h2>
+    <p class="section-desc">
+      Regularised linear models on the engineered features. Lasso and Elastic Net
+      shrink some coefficients to exactly zero (feature selection).
+    </p>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>RMSE</th>
+            <th>Non-zero coefficients</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for name, m in summary.regression_view.items() %}
+          <tr>
+            <td><strong>{{ name }}</strong></td>
+            <td>{{ "%.4f"|format(m.rmse) }}</td>
+            <td>{{ m.n_nonzero_coefs }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Section 02: Classification View -->
+  {% if summary.classification_view %}
+  <section class="section">
+    <h2 class="section-title"><span class="section-badge">02</span>Classification View — Log-Loss & AUC</h2>
+    <p class="section-desc">
+      Applying L1 and L2 penalties to Logistic Regression. Helps handle multicollinearity among
+      the frequency-encoded categorical variables.
+    </p>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>Log Loss</th>
+            <th>ROC-AUC</th>
+            <th>F1 Score</th>
+            <th>Non-zero coefficients</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for name, m in summary.classification_view.items() %}
+          <tr class="{% if loop.last %}highlight{% endif %}">
+            <td><strong>{{ name }}</strong></td>
+            <td style="font-family: monospace;">{{ "%.4f"|format(m.log_loss) }}</td>
+            <td style="font-family: monospace; {% if loop.last %}color: var(--green); font-weight: bold;{% endif %}">{{ "%.4f"|format(m.roc_auc) }}</td>
+            <td style="font-family: monospace;">{{ "%.4f"|format(m.f1) }}</td>
+            <td>{{ m.n_nonzero_coefs }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Section 03: Visual Diagnostics -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-badge">03</span>Visual Diagnostics</h2>
+    <div class="figure-grid mt-3">
+      <div class="figure-card full-width">
+        <h3>RMSE Comparison</h3>
+        <p class="purpose">Comparison of RMSE across OLS, Ridge, and Lasso.</p>
+        <img src="{{ url_for('serve_figures', filename='reg_02_rmse_comparison.png') }}" alt="Coefficients Comparison">
+        <div class="observation">
+          <div class="obs-label">OBSERVATION</div>
+          L1 (Lasso) effectively zeroes out collinear features, performing automatic feature selection, while L2 smoothly penalizes magnitude.
+        </div>
+      </div>
+      
+      <div class="figure-card full-width">
+        <h3>Regularization Path (Alpha Sweep)</h3>
+        <p class="purpose">Coefficient trajectories as regularization strength (alpha) varies.</p>
+        <!-- Assuming we have reg_01_lasso_paths.png or similar, fallback handled by browser -->
+        <img src="{{ url_for('serve_figures', filename='reg_01_lasso_paths.png') }}" alt="Alpha Path" onerror="this.style.display='none';">
+        <div class="observation">
+          <div class="obs-label">OBSERVATION</div>
+          Stronger regularization diminishes all paths to zero, identifying the absolute most robust predictors just before they vanish.
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

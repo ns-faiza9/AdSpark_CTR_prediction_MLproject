@@ -1,0 +1,44 @@
+{
+  "best_threshold": 0.1775179954422597,
+  "train_accuracy": 0.616857474656156,
+  "test_accuracy": 0.6154047836948725,
+  "roc_auc": 0.6468370582164312,
+  "pr_auc": 0.27370245955320666,
+  "log_loss": 0.4336048347160098,
+  "f1": 0.34116370908967647,
+  "precision": 0.24031757402101242,
+  "recall": 0.5878453361369079,
+  "n_iter": 28,
+  "n_features": 23,
+  "train_records": 808579,
+  "test_records": 202145,
+  "target_ratio": "136967 / 671612",
+  "classification_report": {
+    "No Click": {
+      "precision": 0.8808,
+      "recall": 0.621,
+      "f1_score": 0.7284,
+      "support": 167903
+    },
+    "Click": {
+      "precision": 0.2403,
+      "recall": 0.5878,
+      "f1_score": 0.3412,
+      "support": 34242
+    }
+  },
+  "scaling_comparison": {
+    "Unscaled": {
+      "train_accuracy": 58.27,
+      "test_accuracy": 58.12
+    },
+    "StandardScaler": {
+      "train_accuracy": 61.69,
+      "test_accuracy": 61.54
+    },
+    "MinMaxScaler": {
+      "train_accuracy": 62.1,
+      "test_accuracy": 61.99
+    }
+  }
+}
