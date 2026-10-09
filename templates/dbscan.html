@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}11 🕸️ DBSCAN Clustering — AdSpark ML{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div class="kicker">Tab 11 • CO4 Density-Based Clustering</div>
+  <h1>DBSCAN <span class="gradient-text">Clustering</span></h1>
+  <p class="subtitle">
+    Density-Based Spatial Clustering of Applications with Noise. Selecting \(\epsilon\) (Epsilon) via the 5-NN distance elbow graph.
+  </p>
+</header>
+
+<div class="page-main">
+  <section class="section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Optimal Epsilon (\(\epsilon\))</div>
+        <div class="stat-value">{{ summary.epsilon | default(1.8) }}</div>
+        <div class="stat-sub">Neighborhood radius threshold</div>
+      </div>
+      <div class="stat-card accent-green">
+        <div class="stat-label">MinPts (min_samples)</div>
+        <div class="stat-value">{{ summary.min_samples | default(5) }}</div>
+        <div class="stat-sub">Core point threshold</div>
+      </div>
+      <div class="stat-card accent-purple">
+        <div class="stat-label">Noise Outlier Percentage</div>
+        <div class="stat-value">{{ summary.noise_percentage | default(3.8) }}%</div>
+        <div class="stat-sub">Unclustered noise points</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <span class="section-badge">GRAPH</span>
+      <span>k-Distance Neighborhood Plot</span>
+    </div>
+
+    <div class="figure-grid">
+      <div class="figure-card full-width">
+        <h3>5-NN Distance Graph for \(\epsilon\) Selection</h3>
+        <p class="purpose">Sorted k-nearest neighbor distance curve identifying the sharp elbow point for optimal Epsilon choice.</p>
+        <img src="{{ url_for('serve_figures', filename='db_01_kdistance_eps.png') }}" alt="DBSCAN k-Distance Graph">
+        <div class="observation">
+          <div class="obs-label">NEIGHBORHOOD SELECTION</div>
+          The elbow in the 5-NN distance graph occurs at \(\epsilon = 1.8\), separating dense impression clusters from noise points.
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

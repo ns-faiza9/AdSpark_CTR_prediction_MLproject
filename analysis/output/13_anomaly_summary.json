@@ -1,0 +1,7 @@
+{
+  "isolation_forest_anomalies": 125,
+  "isolation_forest_pct": 5.0,
+  "one_class_svm_anomalies": 63,
+  "one_class_svm_pct": 5.0,
+  "description": "Identified fraudulent or abnormal ad impression traffic patterns."
+}

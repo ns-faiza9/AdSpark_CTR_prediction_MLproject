@@ -1,0 +1,15 @@
+{
+  "linkage_methods": [
+    "single",
+    "complete",
+    "average",
+    "ward"
+  ],
+  "max_distances": {
+    "single": 3.766,
+    "complete": 7.4768,
+    "average": 5.6308,
+    "ward": 11.5383
+  },
+  "cluster_structure": "4 clear sub-groups discovered via Ward linkage"
+}

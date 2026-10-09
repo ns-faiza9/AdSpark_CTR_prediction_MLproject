@@ -1,0 +1,7 @@
+{
+  "epsilon": 1.8,
+  "min_samples": 5,
+  "estimated_clusters": 5,
+  "noise_points": 708,
+  "noise_percentage": 70.8
+}

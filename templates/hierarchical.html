@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}10 🌿 Hierarchical Clustering — AdSpark ML{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div class="kicker">Tab 10 • CO4 Unsupervised Learning</div>
+  <h1>Hierarchical <span class="gradient-text">Clustering</span></h1>
+  <p class="subtitle">
+    Agglomerative bottom-up hierarchical clustering comparing 4 linkage criteria: Single, Complete, Average, and Ward Linkage.
+  </p>
+</header>
+
+<div class="page-main">
+  <section class="section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Evaluated Linkages</div>
+        <div class="stat-value">4</div>
+        <div class="stat-sub">Single, Complete, Avg, Ward</div>
+      </div>
+      <div class="stat-card accent-green">
+        <div class="stat-label">Best Criterion</div>
+        <div class="stat-value">Ward Linkage</div>
+        <div class="stat-sub">Minimizes variance merge</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <span class="section-badge">DENDROGRAMS</span>
+      <span>Dendrogram Tree Comparisons</span>
+    </div>
+
+    <div class="figure-grid">
+      <div class="figure-card full-width">
+        <h3>Dendrogram Visualizations for Linkage Methods</h3>
+        <p class="purpose">Hierarchical merge tree trees under Single, Complete, Average, and Ward linkage criteria.</p>
+        <img src="{{ url_for('serve_figures', filename='hc_01_dendrograms.png') }}" alt="Hierarchical Dendrograms">
+        <div class="observation">
+          <div class="obs-label">LINKAGE ANALYSIS</div>
+          Ward linkage produces the most balanced cluster hierarchy, avoiding the chaining effect observed in Single linkage.
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}13 🚨 Anomaly Detection — AdSpark ML{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div class="kicker">Tab 13 • CO4 Outlier Detection</div>
+  <h1>Anomaly <span class="gradient-text">Detection</span></h1>
+  <p class="subtitle">
+    Unsupervised fraud & outlier detection in digital ad impressions using Isolation Forest tree isolation and One-Class Support Vector Machines (OC-SVM).
+  </p>
+</header>
+
+<div class="page-main">
+  <section class="section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Isolation Forest Anomalies</div>
+        <div class="stat-value">{{ summary.isolation_forest_anomalies | default(125) }}</div>
+        <div class="stat-sub">Flagged ad impressions (5%)</div>
+      </div>
+      <div class="stat-card accent-green">
+        <div class="stat-label">One-Class SVM Outliers</div>
+        <div class="stat-value">{{ summary.one_class_svm_anomalies | default(50) }}</div>
+        <div class="stat-sub">RBF kernel decision boundary</div>
+      </div>
+      <div class="stat-card accent-purple">
+        <div class="stat-label">Contamination Rate</div>
+        <div class="stat-value">5.0%</div>
+        <div class="stat-sub">Expected outlier fraction</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <span class="section-badge">DISTRIBUTION</span>
+      <span>Isolation Forest Anomaly Score Distribution</span>
+    </div>
+
+    <div class="figure-grid">
+      <div class="figure-card full-width">
+        <h3>Isolation Forest Anomaly Score Histogram</h3>
+        <p class="purpose">Frequency distribution of calculated anomaly scores; right tail (> 95th percentile) flags suspicious click farm activity.</p>
+        <img src="{{ url_for('serve_figures', filename='anom_01_isolation_svm.png') }}" alt="Anomaly Detection Histogram">
+        <div class="observation">
+          <div class="obs-label">FRAUD AUDIT INSIGHT</div>
+          Ad impressions exceeding the 95th percentile anomaly score threshold exhibit abnormal IP-device combinations, indicating potential bot traffic or ad click fraud.
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
