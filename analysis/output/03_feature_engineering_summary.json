@@ -1,0 +1,61 @@
+{
+  "n_features": 23,
+  "feature_names": [
+    "hour_of_day",
+    "day_of_week",
+    "site_id_freq",
+    "site_domain_freq",
+    "app_id_freq",
+    "app_domain_freq",
+    "device_id_freq",
+    "device_ip_freq",
+    "device_model_freq",
+    "C1_enc",
+    "banner_pos_enc",
+    "site_category_enc",
+    "app_category_enc",
+    "device_type_enc",
+    "device_conn_type_enc",
+    "C14_enc",
+    "C15_enc",
+    "C16_enc",
+    "C17_enc",
+    "C18_enc",
+    "C19_enc",
+    "C20_enc",
+    "C21_enc"
+  ],
+  "train_rows": 1010724,
+  "test_rows": 205986,
+  "high_cardinality_encoded": [
+    "site_id",
+    "site_domain",
+    "app_id",
+    "app_domain",
+    "device_id",
+    "device_ip",
+    "device_model"
+  ],
+  "low_cardinality_encoded": [
+    "C1",
+    "banner_pos",
+    "site_category",
+    "app_category",
+    "device_type",
+    "device_conn_type",
+    "C14",
+    "C15",
+    "C16",
+    "C17",
+    "C18",
+    "C19",
+    "C20",
+    "C21"
+  ],
+  "dropped": [
+    "id",
+    "hour",
+    "device_id",
+    "device_ip"
+  ]
+}

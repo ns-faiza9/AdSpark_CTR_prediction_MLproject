@@ -1,0 +1,312 @@
+{% extends "base.html" %}
+
+{% block title %}02 🔍 15-Task EDA — AdSpark ML{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <div class="kicker">Stage 02 • Course Outcome CO2</div>
+  <h1>15-Task Exploratory <span class="gradient-text">Data Analysis (EDA)</span></h1>
+  <p class="subtitle">
+    Standard 15-Task Exploratory Data Analysis adapted specifically for the Avazu Click-Through Rate dataset schema (1.01M ad impression records, 24 attributes).
+  </p>
+</header>
+
+<div class="page-main">
+  <!-- Task Navigation Quick Grid -->
+  <section class="section">
+    <div class="section-title">
+      <span class="section-badge">15 TASKS</span>
+      <span>EDA Workflow Index</span>
+    </div>
+
+    <div class="chip-row">
+      {% for t in range(1, 16) %}
+        <a href="#task-{{ t }}" class="chip" style="font-weight: 700;">Task {{ t }}</a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- About Data -->
+  <section class="section" id="task-1">
+    <div class="section-title">
+      <span class="section-badge">About Data</span>
+        <span>Overview</span>
+    </div>
+    <p class="section-desc">Inspect raw impression attributes, total dataset shape, and first 5 records.</p>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Dataset Shape</div>
+        <div class="stat-value">1,010,724 × 24</div>
+        <div class="stat-sub">Rows × Columns</div>
+      </div>
+      <div class="stat-card accent-green">
+        <div class="stat-label">Raw Impressions Loaded</div>
+        <div class="stat-value">1.01M</div>
+        <div class="stat-sub">Ad impression log events</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Task 2: Basic Structure & Data Types -->
+  <section class="section" id="task-2">
+    <div class="section-title">
+      <span class="section-badge">TASK 2</span>
+      <span>Basic Structure & Data Types</span>
+    </div>
+      <div class="figure-grid mt-3">
+        <div class="figure-card">
+        <h3>Feature Schema & Column Dtypes</h3>
+        <p class="purpose">24 categorical and numeric fields extracted from raw web log files.</p>
+        <div class="table-wrap" style="max-height: 380px; overflow-y: auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Field Name</th>
+                <th>Description</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>id</code></td><td>Ad impression unique identifier</td><td>String / uint64</td></tr>
+              <tr><td><code>click</code></td><td>Target (0 = No Click, 1 = Click)</td><td>int8</td></tr>
+              <tr><td><code>hour</code></td><td>Timestamp YYMMDDHH</td><td>int32</td></tr>
+              <tr><td><code>C1</code></td><td>Anonymized categorical feature 1</td><td>int16</td></tr>
+              <tr><td><code>banner_pos</code></td><td>Banner placement position (0-7)</td><td>int8</td></tr>
+              <tr><td><code>site_id</code></td><td>Website ID</td><td>String</td></tr>
+              <tr><td><code>site_domain</code></td><td>Website domain ID</td><td>String</td></tr>
+              <tr><td><code>site_category</code></td><td>Website category ID</td><td>String</td></tr>
+              <tr><td><code>app_id</code></td><td>Application ID</td><td>String</td></tr>
+              <tr><td><code>app_domain</code></td><td>Application domain ID</td><td>String</td></tr>
+              <tr><td><code>app_category</code></td><td>Application category ID</td><td>String</td></tr>
+              <tr><td><code>device_id</code></td><td>Mobile device ID</td><td>String</td></tr>
+              <tr><td><code>device_ip</code></td><td>User IP address</td><td>String</td></tr>
+              <tr><td><code>device_model</code></td><td>Device hardware model</td><td>String</td></tr>
+              <tr><td><code>device_type</code></td><td>Device type code (0, 1, 4, 5)</td><td>int8</td></tr>
+              <tr><td><code>device_conn_type</code></td><td>Network connection type</td><td>int8</td></tr>
+              <tr><td><code>C14 - C21</code></td><td>Anonymized categorical signals</td><td>int16 / int32</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </div>
+    <p class="section-desc">Generate data type counts and summary statistics across categorical IDs and numerical features.</p>
+    <div class="callout blue">
+      <span class="callout-title">Structure Insight: </span>
+      Contains 14 numerical features (anonymized signals C1, C14–C21) and 9 string categorical features (device_ip, device_id, site_id, app_id).
+    </div>
+  </section>
+
+  <!-- Task 3: Missing Values Analysis -->
+  <section class="section" id="task-3">
+    <div class="section-title">
+      <span class="section-badge">TASK 3</span>
+      <span>Missing Values Analysis</span>
+    </div>
+    <div class="figure-grid">
+      <div class="figure-card full-width">
+        <h3>Missingness Heatmap</h3>
+        <p class="purpose">Calculating missing counts and percentages per column.</p>
+        <img src="{{ url_for('serve_figures', filename='eda_02_missingness.png') }}" alt="Missing Values Heatmap">
+        <div class="observation">
+          <div class="obs-label">ZERO MISSING FOUND</div>
+          All 1.01M impression rows contain 0 missing values across all 24 feature attributes.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Task 4: Duplicate Impressions Check -->
+  <section class="section" id="task-4">
+    <div class="section-title">
+      <span class="section-badge">TASK 4</span>
+      <span>Duplicate Impressions Check</span>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card accent-purple">
+        <div class="stat-label">Exact Duplicate Rows</div>
+        <div class="stat-value">0</div>
+        <div class="stat-sub">100% unique impression IDs</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Task 5: Target Variable Distribution -->
+  <section class="section" id="task-5">
+    <div class="section-title">
+      <span class="section-badge">TASK 5</span>
+      <span>Target Variable Distribution (click)</span>
+    </div>
+    <div class="figure-grid">
+      <div class="figure-card">
+        <h3>Target Click Class Distribution</h3>
+        <p class="purpose">Class imbalance breakdown for binary target (0 = No Click, 1 = Click).</p>
+        <img src="{{ url_for('serve_figures', filename='eda_01_target_distribution.png') }}" alt="Target Distribution">
+        <div class="observation">
+          <div class="obs-label">CLASS IMBALANCE</div>
+          Baseline CTR is 16.94% (171,209 positive clicks out of 1.01M impressions).
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Task 6: Extracted Feature Distributions -->
+  <section class="section" id="task-6">
+    <div class="section-title">
+      <span class="section-badge">TASK 6</span>
+      <span>Extracted Feature Distributions</span>
+    </div>
+    <div class="figure-grid">
+      <div class="figure-card full-width">
+        <h3>Feature Histograms & KDE Plots</h3>
+        <p class="purpose">Extracted hour_of_day, banner_pos, C14, and C21 distributions.</p>
+        <img src="{{ url_for('serve_figures', filename='eda_10_numeric_distributions.png') }}" alt="Numeric Distributions">
+      </div>
+    </div>
+  </section>
+
+  <!-- Task 7: Outlier Detection via Boxplots -->
+  <section class="section" id="task-7">
+    <div class="section-title">
+      <span class="section-badge">TASK 7</span>
+      <span>Outlier Detection via Boxplots</span>
+    </div>
+    <div class="figure-grid">
+      <div class="figure-card full-width">
+        <h3>Boxplots for Key Numerical Attributes</h3>
+        <p class="purpose">Boxplot IQR spread for banner_pos, C14, C17, and C21.</p>
+        <img src="{{ url_for('serve_figures', filename='eda_13_outlier_boxplots.png') }}" alt="Outlier Boxplots">
+      </div>
+    </div>
+  </section>
+
+  <!-- Task 8: Correlation Analysis -->
+  <section class="section" id="task-8">
+    <div class="section-title">
+      <span class="section-badge">TASK 8</span>
+      <span>Correlation Analysis</span>
+    </div>
+    <div class="figure-grid">
+      <div class="figure-card">
+        <h3>Pearson Correlation Heatmap</h3>
+        <p class="purpose">Correlation matrix across numerical attributes.</p>
+        <img src="{{ url_for('serve_figures', filename='eda_11_correlation_heatmap.png') }}" alt="Correlation Heatmap">
+      </div>
+      <div class="figure-card">
+        <h3>Correlation with Click Target</h3>
+        <p class="purpose">Sorted correlation values specifically relative to target variable click.</p>
+        <img src="{{ url_for('serve_figures', filename='eda_15_correlation_with_target.png') }}" alt="Correlation with Target">
+      </div>
+    </div>
+  </section>
+
+  <!-- Task 9: Feature Interaction Scatter Plots -->
+  <section class="section" id="task-9">
+    <div class="section-title">
+      <span class="section-badge">TASK 9</span>
+      <span>Feature Interaction Scatter Plots</span>
+    </div>
+    <div class="figure-grid">
+      <div class="figure-card full-width">
+        <h3>Feature Interaction Pair Scatter Plots</h3>
+        <p class="purpose">C14 vs C17 & banner_pos vs device_type hue-coded by click outcome.</p>
+        <img src="{{ url_for('serve_figures', filename='eda_16_scatter_feature_click.png') }}" alt="Interaction Scatter Plots">
+      </div>
+    </div>
+  </section>
+
+  <!-- Task 10: Categorical Feature Frequency Counts -->
+  <section class="section" id="task-10">
+    <div class="section-title">
+      <span class="section-badge">TASK 10</span>
+      <span>Categorical Feature Frequency Counts</span>
+    </div>
+    <div class="figure-grid">
+      <div class="figure-card full-width">
+        <h3>Top Category Counts</h3>
+        <p class="purpose">Frequency bar plots for site_category, app_category, device_type, device_conn_type, C15, C16.</p>
+        <img src="{{ url_for('serve_figures', filename='eda_14_feature_count_plots.png') }}" alt="Categorical Frequency Counts">
+      </div>
+    </div>
+  </section>
+
+  <!-- Task 11: Hourly CTR Analysis -->
+  <section class="section" id="task-11">
+    <div class="section-title">
+      <span class="section-badge">TASK 11</span>
+      <span>Hourly CTR Analysis</span>
+    </div>
+    <div class="figure-grid">
+      <div class="figure-card full-width">
+        <h3>Hourly Click-Through Rate (CTR %) Curve</h3>
+        <p class="purpose">Average Click-Through Rate grouped by hour_of_day (0–23).</p>
+        <img src="{{ url_for('serve_figures', filename='eda_05_click_rate_hour.png') }}" alt="Hourly CTR">
+      </div>
+    </div>
+  </section>
+
+  <!-- Task 12: Ad Context vs CTR Analysis -->
+  <section class="section" id="task-12">
+    <div class="section-title">
+      <span class="section-badge">TASK 12</span>
+      <span>Ad Context vs CTR Analysis</span>
+    </div>
+    <div class="figure-grid">
+      <div class="figure-card full-width">
+        <h3>CTR % by Banner Position & Connection Type</h3>
+        <p class="purpose">Grouped bar charts visualizing CTR variations across ad context variables.</p>
+        <img src="{{ url_for('serve_figures', filename='eda_04_click_rate_banner_pos.png') }}" alt="Context CTR Breakdown">
+      </div>
+    </div>
+  </section>
+
+  <!-- Task 13: Multi-Day CTR Temporal Trends -->
+  <section class="section" id="task-13">
+    <div class="section-title">
+      <span class="section-badge">TASK 13</span>
+      <span>Multi-Day CTR Temporal Trends</span>
+    </div>
+    <div class="figure-grid">
+      <div class="figure-card full-width">
+        <h3>Daily CTR Trends Segmented by Connection Type</h3>
+        <p class="purpose">Tracking daily/hourly CTR trends over time across connection segments.</p>
+        <img src="{{ url_for('serve_figures', filename='eda_17_click_rate_dayofweek.png') }}" alt="Multi-Day Temporal Trends">
+      </div>
+    </div>
+  </section>
+
+  <!-- Task 14: Category Performance & Volume Analysis -->
+  <section class="section" id="task-14">
+    <div class="section-title">
+      <span class="section-badge">TASK 14</span>
+      <span>Category Performance & Volume Analysis</span>
+    </div>
+    <div class="figure-grid">
+      <div class="figure-card full-width">
+        <h3>Impression Volume vs CTR Conversion Rate</h3>
+        <p class="purpose">Comparing volume distribution alongside average CTR for top site categories.</p>
+        <img src="{{ url_for('serve_figures', filename='eda_08_click_rate_site_category.png') }}" alt="Volume vs CTR Analysis">
+      </div>
+    </div>
+  </section>
+
+  <!-- Task 15: Pairwise Feature Plot -->
+  <section class="section" id="task-15">
+    <div class="section-title">
+      <span class="section-badge">TASK 15</span>
+      <span>Pairwise Feature Plot (Multi-variate)</span>
+    </div>
+    <div class="figure-grid">
+      <div class="figure-card full-width">
+        <h3>Multi-variate Pairplot Matrix</h3>
+        <p class="purpose">sns.pairplot across banner_pos, C1, C14, C17, and C21 hue-coded by click status.</p>
+        <img src="{{ url_for('serve_figures', filename='eda_18_pairplot.png') }}" alt="Pairwise Feature Plot">
+        <div class="observation">
+          <div class="obs-label">TAKEAWAY</div>
+          Confirmative non-linear overlap across all feature pairs, proving tree non-linearities and ensemble methods are necessary for high-performance CTR prediction.
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
