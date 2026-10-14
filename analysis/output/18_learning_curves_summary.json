@@ -1,5 +1,6 @@
 {
-  "final_train_score": 0.81,
-  "final_val_score": 0.74,
-  "bias_variance_diagnosis": "Good Fit \u2014 Convergence gap is narrow (< 0.07), indicating balanced bias-variance."
+  "final_train_score": 0.7773,
+  "final_val_score": 0.6842,
+  "convergence_gap": 0.0931,
+  "bias_variance_diagnosis": "Mild Variance \u2014 Moderate generalization gap."
 }

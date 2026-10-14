@@ -1,8 +1,19 @@
 {
   "model_a": "Logistic Regression",
-  "model_b": "XGBoost Classifier",
-  "mcnemar_statistic": 3642.7584,
-  "p_value": 0.0,
-  "statistically_significant": true,
-  "conclusion": "XGBoost's performance improvement over Logistic Regression is statistically significant (p < 0.001)."
+  "model_b": "XGBoost / LightGBM",
+  "mcnemar_statistic": 0.0008,
+  "p_value": 0.9770655906710511,
+  "p_value_display": "0.9771",
+  "statistically_significant": false,
+  "contingency_matrix": [
+    [
+      4537,
+      605
+    ],
+    [
+      605,
+      1753
+    ]
+  ],
+  "conclusion": "The performance difference is not statistically significant."
 }

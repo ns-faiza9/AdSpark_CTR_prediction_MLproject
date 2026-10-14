@@ -25,7 +25,7 @@
       </div>
       <div class="stat-card accent-purple">
         <div class="stat-label">ECE Reduction</div>
-        <div class="stat-value">85.3%</div>
+        <div class="stat-value">{{ summary.ece_reduction_pct | default('85.2') }}%</div>
         <div class="stat-sub">Expected Calibration Error drop</div>
       </div>
     </div>
@@ -44,7 +44,7 @@
         <img src="{{ url_for('serve_figures', filename='cal_01_reliability_diagrams.png') }}" alt="Reliability Diagrams">
         <div class="observation">
           <div class="obs-label">CALIBRATION TAKEAWAY</div>
-          Isotonic Regression perfectly aligns predicted probabilities with observed CTRs along the diagonal 45° reference line, reducing Expected Calibration Error (ECE) from 0.0845 down to 0.0124.
+          Isotonic Regression closely aligns predicted probabilities with observed empirical CTRs along the diagonal 45° reference line, reducing Expected Calibration Error (ECE) from {{ summary.ece_before | default('0.0178') }} down to {{ summary.ece_after_isotonic | default('0.0026') }}.
         </div>
       </div>
     </div>

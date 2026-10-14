@@ -20,7 +20,9 @@ def main() -> None:
     df = load_processed()
     X = df.drop(columns=[TARGET])
 
-    X_sample = X.sample(n=min(2500, len(X)), random_state=SEED).values
+    from sklearn.preprocessing import StandardScaler
+    X_raw = X.sample(n=min(2500, len(X)), random_state=SEED).values
+    X_sample = StandardScaler().fit_transform(X_raw)
 
     # Isolation Forest
     iso = IsolationForest(contamination=0.05, random_state=SEED).fit(X_sample)

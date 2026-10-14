@@ -1,17 +1,133 @@
 {
+  "n_features": 23,
+  "components_for_80_pct": 10,
+  "components_for_90_pct": 14,
+  "components_for_95_pct": 16,
+  "kaiser_components": 7,
+  "top_2_variance_pct": 33.82,
+  "compression_90_pct": 39.1,
   "pca_variance_ratio": [
-    0.1099,
-    0.1073,
-    0.1033,
-    0.1027,
-    0.1015,
-    0.0995,
-    0.0981,
-    0.0953,
-    0.0928,
-    0.0896
+    0.2232,
+    0.115,
+    0.103,
+    0.0832,
+    0.0578,
+    0.0496,
+    0.0447,
+    0.0419,
+    0.0416,
+    0.0402,
+    0.0359,
+    0.0312,
+    0.0275,
+    0.0242,
+    0.0227,
+    0.018,
+    0.0169,
+    0.0087,
+    0.0065,
+    0.0047,
+    0.0016,
+    0.0013,
+    0.0007
   ],
-  "components_for_90_pct": 9,
+  "cumulative_variance_ratio": [
+    0.2232,
+    0.3382,
+    0.4412,
+    0.5244,
+    0.5822,
+    0.6318,
+    0.6765,
+    0.7184,
+    0.76,
+    0.8002,
+    0.8361,
+    0.8673,
+    0.8948,
+    0.9189,
+    0.9416,
+    0.9596,
+    0.9765,
+    0.9852,
+    0.9917,
+    0.9964,
+    0.998,
+    0.9993,
+    1.0
+  ],
+  "pca_table": [
+    {
+      "component": "PC 1",
+      "eigenvalue": 5.136,
+      "variance_ratio": 22.32,
+      "cumulative_variance": 22.32,
+      "dominant_feature": "app_id_freq (+), site_id_freq (-)"
+    },
+    {
+      "component": "PC 2",
+      "eigenvalue": 2.645,
+      "variance_ratio": 11.5,
+      "cumulative_variance": 33.82,
+      "dominant_feature": "C14_enc (+), C16_enc (-)"
+    },
+    {
+      "component": "PC 3",
+      "eigenvalue": 2.371,
+      "variance_ratio": 10.3,
+      "cumulative_variance": 44.12,
+      "dominant_feature": "device_type_enc (+), device_id_freq (-)"
+    },
+    {
+      "component": "PC 4",
+      "eigenvalue": 1.914,
+      "variance_ratio": 8.32,
+      "cumulative_variance": 52.44,
+      "dominant_feature": "C16_enc (+), device_type_enc (-)"
+    },
+    {
+      "component": "PC 5",
+      "eigenvalue": 1.329,
+      "variance_ratio": 5.78,
+      "cumulative_variance": 58.22,
+      "dominant_feature": "device_conn_type_enc (+), C14_enc (-)"
+    },
+    {
+      "component": "PC 6",
+      "eigenvalue": 1.141,
+      "variance_ratio": 4.96,
+      "cumulative_variance": 63.18,
+      "dominant_feature": "device_model_freq (+), C20_enc (-)"
+    },
+    {
+      "component": "PC 7",
+      "eigenvalue": 1.029,
+      "variance_ratio": 4.47,
+      "cumulative_variance": 67.65,
+      "dominant_feature": "device_ip_freq (+), C20_enc (-)"
+    },
+    {
+      "component": "PC 8",
+      "eigenvalue": 0.965,
+      "variance_ratio": 4.19,
+      "cumulative_variance": 71.84,
+      "dominant_feature": "day_of_week (+), C15_enc (-)"
+    },
+    {
+      "component": "PC 9",
+      "eigenvalue": 0.957,
+      "variance_ratio": 4.16,
+      "cumulative_variance": 76.0,
+      "dominant_feature": "hour_of_day (+), device_ip_freq (-)"
+    },
+    {
+      "component": "PC 10",
+      "eigenvalue": 0.925,
+      "variance_ratio": 4.02,
+      "cumulative_variance": 80.02,
+      "dominant_feature": "device_model_freq (+), site_category_enc (-)"
+    }
+  ],
   "tsne_perplexity_sweep": [
     10,
     30,

@@ -6,47 +6,188 @@
   <div class="kicker">Tab 12 • CO4 Dimensionality Reduction</div>
   <h1>Dimensionality <span class="gradient-text">Reduction (PCA, t-SNE, UMAP)</span></h1>
   <p class="subtitle">
-    Linear Principal Component Analysis (PCA Scree Plot) and Non-Linear Manifold Learning (t-SNE & UMAP) for high-dimensional feature visualization.
+    Comprehensive linear eigendecomposition (Principal Component Analysis) and non-linear manifold learning (t-SNE & UMAP) for high-dimensional impression representation and compression.
   </p>
 </header>
 
 <div class="page-main">
+  <!-- 4-Card Hero Metrics Grid -->
   <section class="section">
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-label">PCA Components for 90% Var</div>
-        <div class="stat-value">{{ summary.components_for_90_pct | default(9) }}</div>
-        <div class="stat-sub">Reduces features to {{ summary.components_for_90_pct | default(9) }} PCs</div>
+        <div class="stat-label">Input Dimension</div>
+        <div class="stat-value">{{ summary.n_features | default(23) }} Features</div>
+        <div class="stat-sub">Engineered feature space</div>
       </div>
       <div class="stat-card accent-green">
-        <div class="stat-label">t-SNE Perplexity</div>
-        <div class="stat-value">30</div>
-        <div class="stat-sub">Optimal local cluster resolution</div>
+        <div class="stat-label">90% Variance Threshold</div>
+        <div class="stat-value">{{ summary.components_for_90_pct | default(14) }} PCs</div>
+        <div class="stat-sub">{{ summary.compression_90_pct | default('39.1') }}% feature compression</div>
       </div>
       <div class="stat-card accent-purple">
-        <div class="stat-label">UMAP Neighbors</div>
-        <div class="stat-value">{{ summary.umap_n_neighbors | default(15) }}</div>
-        <div class="stat-sub">Preserves global & local structure</div>
+        <div class="stat-label">Top 2 PCs Cumulative Var</div>
+        <div class="stat-value">{{ summary.top_2_variance_pct | default('30.5') }}%</div>
+        <div class="stat-sub">PC1 + PC2 orthogonal information</div>
+      </div>
+      <div class="stat-card accent-orange">
+        <div class="stat-label">Kaiser Criterion (&lambda; &ge; 1)</div>
+        <div class="stat-value">{{ summary.kaiser_components | default(8) }} PCs</div>
+        <div class="stat-sub">Components with above-average info</div>
       </div>
     </div>
   </section>
 
+  <!-- PCA Diagnostics Section: Scree & Biplot -->
   <section class="section">
     <div class="section-title">
-      <span class="section-badge">PROJECTIONS</span>
-      <span>PCA Scree Plot & Manifold Projections</span>
+      <span class="section-badge">PCA</span>
+      <span>Principal Component Analysis: Scree Plot & 2D Biplot</span>
+    </div>
+
+    <div class="figure-grid" style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
+      <!-- Figure 1: Scree Plot -->
+      <div class="figure-card full-width">
+        <h3>Figure 1: PCA Scree Plot & Cumulative Explained Variance Curve</h3>
+        <p class="purpose">Bar plot of individual explained variance percentages per principal component with cumulative step line and variance thresholds (80%, 90%).</p>
+        <img src="{{ url_for('serve_figures', filename='dr_01_pca_scree.png') }}" alt="PCA Scree Plot and Explained Variance">
+        <div class="observation">
+          <div class="obs-label">EIGENVALUE DECOMPOSITION</div>
+          The top {{ summary.components_for_80_pct | default(10) }} principal components explain 80% of total variance, and {{ summary.components_for_90_pct | default(14) }} components achieve 90% information retention, successfully reducing the feature dimension from {{ summary.n_features | default(23) }} to {{ summary.components_for_90_pct | default(14) }}.
+        </div>
+      </div>
+
+      <!-- Figure 2: Biplot -->
+      <div class="figure-card full-width">
+        <h3>Figure 2: 2D Spatial PCA Projection & Feature Loading Vectors (Biplot)</h3>
+        <p class="purpose">Standardized impression projections onto PC1 vs PC2 colored by CTR target (0=No Click, 1=Click), overlaid with top eigenvector loading directions.</p>
+        <img src="{{ url_for('serve_figures', filename='dr_02_pca_biplot.png') }}" alt="2D PCA Biplot with Feature Vectors">
+        <div class="observation">
+          <div class="obs-label">SPATIAL SEPARATION</div>
+          PC1 captures strong device-level and inventory frequency signals, while PC2 aligns with temporal cyclical features (hour_sin/cos) and banner position, creating identifiable sub-spaces for conversion probability.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Factor Loadings Heatmap -->
+  <section class="section">
+    <div class="section-title">
+      <span class="section-badge">LOADINGS</span>
+      <span>Factor Loadings Heatmap (Top Features &times; PC1 to PC5)</span>
     </div>
 
     <div class="figure-grid">
       <div class="figure-card full-width">
-        <h3>PCA Scree Plot & 2D Projection Scatter</h3>
-        <p class="purpose">Left: Individual & cumulative explained variance ratio by PC index. Right: 2D PCA spatial projection colored by CTR target.</p>
-        <img src="{{ url_for('serve_figures', filename='dr_01_scree_tsne_umap.png') }}" alt="Dimensionality Reduction PCA t-SNE UMAP">
+        <h3>Figure 3: PCA Factor Loadings Correlation Matrix</h3>
+        <p class="purpose">Heatmap showing the orthogonal weights and correlations of top contributing features across the first 5 principal components.</p>
+        <img src="{{ url_for('serve_figures', filename='dr_04_pca_loadings_heatmap.png') }}" alt="PCA Factor Loadings Heatmap">
         <div class="observation">
-          <div class="obs-label">DIMENSIONALITY INSIGHT</div>
-          The top {{ summary.components_for_90_pct | default(9) }} Principal Components capture 90% of total feature variance, reflecting high orthogonal distribution across engineered ad context variables.
+          <div class="obs-label">FEATURE COMPOSITION</div>
+          High positive loadings on PC1 correspond to high-cardinality frequency encodings (`device_model_freq`, `site_domain_freq`), whereas PC2 is governed by contextual placement parameters (`banner_pos`, `C15`, `C16`).
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Non-Linear Manifold Learning (t-SNE Sweep) -->
+  <section class="section">
+    <div class="section-title">
+      <span class="section-badge">MANIFOLD</span>
+      <span>Non-Linear Manifold Learning: Multi-Perplexity t-SNE Sweep</span>
+    </div>
+
+    <div class="figure-grid">
+      <div class="figure-card full-width">
+        <h3>Figure 4: t-SNE 2D Manifold Embeddings Across Perplexity Values (10 vs 30 vs 50)</h3>
+        <p class="purpose">Demonstrating how the neighborhood perplexity hyperparameter governs local cluster separation versus preservation of global manifold geometry.</p>
+        <img src="{{ url_for('serve_figures', filename='dr_03_tsne_perplexity_sweep.png') }}" alt="t-SNE Perplexity Comparison">
+        <div class="observation">
+          <div class="obs-label">TOPOLOGY RESOLUTION</div>
+          At low perplexity (10), t-SNE fragments the high-dimensional space into fine-grained local micro-clusters; at perplexity 30 and 50, broader ad-inventory communities and clear click-propensity regions stabilize.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Principal Component Details Table -->
+  {% if summary.pca_table %}
+  <section class="section">
+    <div class="section-title">
+      <span class="section-badge">TABLE</span>
+      <span>Principal Component Eigendecomposition Details (Top 10 PCs)</span>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Eigenvalue (&lambda;)</th>
+            <th>Explained Variance (%)</th>
+            <th>Cumulative Variance (%)</th>
+            <th>Dominant Contributing Features</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in summary.pca_table %}
+          <tr>
+            <td><strong style="color: #38bdf8;">{{ row.component }}</strong></td>
+            <td><code>{{ row.eigenvalue }}</code></td>
+            <td><span class="badge badge-blue">{{ row.variance_ratio }}%</span></td>
+            <td><span class="badge {% if row.cumulative_variance >= 90 %}badge-green{% elif row.cumulative_variance >= 80 %}badge-purple{% else %}badge-blue{% endif %}">{{ row.cumulative_variance }}%</span></td>
+            <td style="color: var(--text-secondary); font-size: 0.88rem;">{{ row.dominant_feature }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Comparative Framework: Linear vs Non-Linear -->
+  <section class="section">
+    <div class="section-title">
+      <span class="section-badge">FRAMEWORK</span>
+      <span>Dimensionality Reduction Paradigm Comparison</span>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Dimension Method</th>
+            <th>Paradigm Type</th>
+            <th>Preserved Structure</th>
+            <th>Complexity</th>
+            <th>Out-of-Sample Transform</th>
+            <th>Production CTR Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>PCA</strong></td>
+            <td>Linear (Eigendecomposition)</td>
+            <td>Global Max Variance (Orthogonal)</td>
+            <td>\(O(d^2 n + d^3)\)</td>
+            <td><span class="badge badge-green">Yes (Fast Matrix Mult)</span></td>
+            <td>Real-time low-latency feature pre-processing</td>
+          </tr>
+          <tr>
+            <td><strong>t-SNE</strong></td>
+            <td>Non-Linear (Probabilistic)</td>
+            <td>Local Neighborhoods (KL-Divergence)</td>
+            <td>\(O(n \log n)\)</td>
+            <td><span class="badge badge-orange">No (Transductive only)</span></td>
+            <td>Exploratory manifold inspection & clustering visualization</td>
+          </tr>
+          <tr>
+            <td><strong>UMAP</strong></td>
+            <td>Non-Linear (Riemannian Geometry)</td>
+            <td>Local & Global Fuzzy Simplicial Sets</td>
+            <td>\(O(n \log n)\)</td>
+            <td><span class="badge badge-green">Yes (Approximate)</span></td>
+            <td>Scalable non-linear embedding for downstream clustering</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 </div>

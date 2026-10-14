@@ -124,20 +124,20 @@
     <div class="figure-grid mt-3">
       <div class="figure-card full-width">
         <h3>Model Coefficients</h3>
-        <p class="purpose">Magnitude of OLS feature coefficients.</p>
-        <img src="{{ url_for('serve_figures', filename='lr_01_coefficients.png') }}" alt="Learning Curve">
+        <p class="purpose">Magnitude and direction of OLS feature coefficients across engineered predictors.</p>
+        <img src="{{ url_for('serve_figures', filename='lr_01_coefficients.png') }}" alt="Model Coefficients">
         <div class="observation">
           <div class="obs-label">OBSERVATION</div>
-          High initial bias resolves as training size increases; validation curve converges closely, indicating a well-fitted linear baseline without severe overfitting.
+          Features such as banner position and key anonymized signals display the largest linear coefficient weights, though linear models struggle to bound predictions to [0, 1].
         </div>
       </div>
       <div class="figure-card full-width">
         <h3>Prediction Distribution</h3>
-        <p class="purpose">Distribution of predicted CTR probabilities vs actual clicks.</p>
-        <img src="{{ url_for('serve_figures', filename='lr_02_prediction_distribution.png') }}" alt="Residuals">
+        <p class="purpose">Distribution of predicted continuous scores vs true binary click target.</p>
+        <img src="{{ url_for('serve_figures', filename='lr_02_prediction_distribution.png') }}" alt="Prediction Distribution">
         <div class="observation">
           <div class="obs-label">OBSERVATION</div>
-          Residuals are somewhat clustered due to the binary nature of the target variable, hinting at the necessity of a Logistic model.
+          Predictions center tightly around the ~0.17 prior mean, with very few instances crossing the standard 0.5 decision boundary, demonstrating why continuous linear regression is ill-suited for binary CTR tasks.
         </div>
       </div>
     </div>

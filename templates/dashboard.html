@@ -16,35 +16,36 @@
 
     <p class="hero-tagline">
       An end-to-end machine learning project that predicts whether an online
-      ad impression results in a click — built on the
-      <strong>Avazu CTR Kaggle dataset</strong> with ~40 million anonymised
-      ad impressions.
+      ad impression results in a click - trained on a 1.01M sampled partition of the
+      <strong>Avazu CTR Kaggle dataset</strong> (~40 million impressions total).
     </p>
 
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="stat-number">40M+</div>
-        <div class="stat-label">Impressions</div>
-      </div>
-      <div class="hero-stat">
-        <div class="stat-number">23</div>
-        <div class="stat-label">Features</div>
+        <div class="stat-number">1.01M</div>
+        <div class="stat-label">Sampled Events</div>
       </div>
       <div class="hero-stat">
         <div class="stat-number">24</div>
+        <div class="stat-label">Columns</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-number">19</div>
         <div class="stat-label">Pipeline Stages</div>
       </div>
       <div class="hero-stat">
-        <div class="stat-number">12</div>
+        <div class="stat-number">10</div>
         <div class="stat-label">Models</div>
       </div>
     </div>
 
-    <div style="position: relative; z-index: 1; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 24px;">
+    <div
+      style="position: relative; z-index: 1; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 24px;">
       <a href="{{ url_for('data_loading') }}" class="btn">
         ⚡ Start Exploring
       </a>
-      <a href="#pipeline" class="btn" style="background: transparent; border: 1px solid var(--border); color: var(--text-primary);">
+      <a href="#pipeline" class="btn"
+        style="background: transparent; border: 1px solid var(--border); color: var(--text-primary);">
         View Pipeline
       </a>
     </div>
@@ -60,11 +61,12 @@
       Project Pipeline
     </h2>
     <p class="section-desc">
-      The complete machine learning workflow — from raw data to regularised models, 
+      The complete machine learning workflow - from raw data to regularised models,
       including unsupervised clustering, advanced mathematical optimizations, and a real-time sandbox.
     </p>
 
-    <div class="quick-access-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px;">
+    <div class="quick-access-grid"
+      style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px;">
       <a href="{{ url_for('data_loading') }}" class="quick-card" style="text-decoration: none; color: inherit;">
         <div class="card-icon blue">📁</div>
         <h3>Data Loading</h3>
@@ -141,8 +143,9 @@
         <p>Isotonic and Platt scaling</p>
         <span class="card-index">Stage 16</span>
       </a>
-      
-      <a href="{{ url_for('predict_page') }}" class="quick-card" style="text-decoration: none; color: inherit; border: 1px solid var(--accent);">
+
+      <a href="{{ url_for('predict_page') }}" class="quick-card"
+        style="text-decoration: none; color: inherit; border: 1px solid var(--accent);">
         <div class="card-icon purple">🚀</div>
         <h3>Real-Time Sandbox</h3>
         <p>Live interactive CTR prediction engine</p>
@@ -174,7 +177,7 @@
       <span class="callout-title">Method: </span>
       A comprehensive Python pipeline loads the dataset, explores it through visual EDA,
       engineers features, then trains and evaluates a robust suite of classifiers —
-      <strong>Linear/Logistic Regression</strong>, <strong>Ensembles (XGBoost/LightGBM)</strong>, 
+      <strong>Linear/Logistic Regression</strong>, <strong>Ensembles (XGBoost/LightGBM)</strong>,
       and <strong>Advanced Factorization Machines</strong> — optimized for AUC and Log Loss.
     </div>
   </section>
@@ -205,8 +208,8 @@
       <span>Model Results &amp; Leaderboard</span>
     </div>
     <p class="section-desc">
-      Final evaluation on the held-out 15% test sample. All models are trained on the
-      same engineered features; ensemble and advanced mathematical models dominate the rankings.
+      Final evaluation on the held-out 20% test sample (202,145 impressions). All models are trained on the
+      same 23 engineered features; tree-based ensembles lead the rankings.
     </p>
 
     <div class="table-wrap">
@@ -226,37 +229,42 @@
         </thead>
         <tbody>
           {% if leaderboard %}
-            {% for item in leaderboard %}
-            <tr class="{% if loop.index == 1 %}highlight{% endif %}">
-              <td style="font-weight: bold; color: {% if loop.index == 1 %}var(--green){% elif loop.index <= 3 %}var(--accent){% else %}var(--text-secondary){% endif %};">
-                #{{ loop.index }}
-              </td>
-              <td><strong>{{ item.name }}</strong></td>
-              <td><span class="chip" style="font-size: 0.72rem;">{{ item.type }}</span></td>
-              <td style="font-family: monospace; font-weight: bold; color: var(--green);">{{ item.roc_auc }}</td>
-              <td style="font-family: monospace;">{{ item.log_loss }}</td>
-              <td style="font-family: monospace;">{{ item.accuracy }}%</td>
-              <td style="font-family: monospace;">{{ item.f1 }}</td>
-              <td style="font-family: monospace;">{{ item.ece }}</td>
-              <td style="font-family: monospace;">{{ item.latency_ms }} ms</td>
-            </tr>
-            {% endfor %}
+          {% for item in leaderboard %}
+          <tr class="{% if loop.index == 1 %}highlight{% endif %}">
+            <td
+              style="font-weight: bold; color: {% if loop.index == 1 %}var(--green){% elif loop.index <= 3 %}var(--accent){% else %}var(--text-secondary){% endif %};">
+              #{{ loop.index }}
+            </td>
+            <td><strong>{{ item.name }}</strong></td>
+            <td><span class="chip" style="font-size: 0.72rem;">{{ item.type }}</span></td>
+            <td style="font-family: monospace; font-weight: bold; color: var(--green);">{{ item.roc_auc }}</td>
+            <td style="font-family: monospace;">{{ item.log_loss }}</td>
+            <td style="font-family: monospace;">{{ item.accuracy }}%</td>
+            <td style="font-family: monospace;">{{ item.f1 }}</td>
+            <td style="font-family: monospace;">{{ item.ece }}</td>
+            <td style="font-family: monospace;">{{ item.latency_ms }} ms</td>
+          </tr>
+          {% endfor %}
           {% else %}
-            <!-- Fallback if leaderboard is missing -->
-            <tr>
-              <td><code>Linear Regression (OLS)</code></td>
-              <td colspan="2">Baseline</td>
-              <td style="font-family: monospace;">{{ "%.4f"|format(linreg.roc_auc) if linreg.roc_auc is defined else '0.6460' }}</td>
-              <td style="font-family: monospace;">{{ "%.4f"|format(linreg.log_loss) if linreg.log_loss is defined else '0.4355' }}</td>
-              <td colspan="4">Baseline — uncalibrated probabilities</td>
-            </tr>
-            <tr class="highlight">
-              <td><code>Logistic Regression</code></td>
-              <td colspan="2">Primary</td>
-              <td style="font-family: monospace; font-weight: bold; color: var(--green);">{{ "%.4f"|format(logreg.roc_auc) if logreg.roc_auc is defined else '0.6468' }}</td>
-              <td style="font-family: monospace;">{{ "%.4f"|format(logreg.log_loss) if logreg.log_loss is defined else '0.6566' }}</td>
-              <td colspan="4">Primary model — calibrated probabilities</td>
-            </tr>
+          <!-- Fallback if leaderboard is missing -->
+          <tr>
+            <td><code>Linear Regression (OLS)</code></td>
+            <td colspan="2">Baseline</td>
+            <td style="font-family: monospace;">{{ "%.4f"|format(linreg.roc_auc) if linreg.roc_auc is defined else
+              '0.6460' }}</td>
+            <td style="font-family: monospace;">{{ "%.4f"|format(linreg.log_loss) if linreg.log_loss is defined else
+              '0.4355' }}</td>
+            <td colspan="4">Baseline — uncalibrated probabilities</td>
+          </tr>
+          <tr class="highlight">
+            <td><code>Logistic Regression</code></td>
+            <td colspan="2">Primary</td>
+            <td style="font-family: monospace; font-weight: bold; color: var(--green);">{{ "%.4f"|format(logreg.roc_auc)
+              if logreg.roc_auc is defined else '0.6468' }}</td>
+            <td style="font-family: monospace;">{{ "%.4f"|format(logreg.log_loss) if logreg.log_loss is defined else
+              '0.6566' }}</td>
+            <td colspan="4">Primary model — calibrated probabilities</td>
+          </tr>
           {% endif %}
         </tbody>
       </table>

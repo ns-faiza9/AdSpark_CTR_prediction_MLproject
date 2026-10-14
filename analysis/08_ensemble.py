@@ -23,7 +23,7 @@ from sklearn.ensemble import (
 )
 from sklearn.metrics import (
     ConfusionMatrixDisplay, accuracy_score, classification_report,
-    f1_score, precision_score, recall_score, roc_auc_score, roc_curve,
+    f1_score, log_loss, precision_score, recall_score, roc_auc_score, roc_curve,
 )
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
@@ -36,12 +36,11 @@ MODELS = {
     "Random Forest": RandomForestClassifier(
         n_estimators=40,
         max_depth=8,
-        class_weight="balanced",
         n_jobs=-1,
         random_state=SEED,
     ),
     "AdaBoost": AdaBoostClassifier(
-        estimator=DecisionTreeClassifier(max_depth=2, class_weight="balanced"),
+        estimator=DecisionTreeClassifier(max_depth=2),
         n_estimators=25,
         learning_rate=0.5,
         random_state=SEED,
@@ -123,6 +122,7 @@ def main() -> None:
             "train_accuracy": round(float(accuracy_score(y_train, y_train_bin)) * 100, 2),
             "test_accuracy": round(float(accuracy_score(y_test, y_bin)) * 100, 2),
             "roc_auc": round(float(roc_auc_score(y_test, y_prob)), 4),
+            "log_loss": round(float(log_loss(y_test, y_prob)), 4),
             "f1": round(float(f1_score(y_test, y_bin, zero_division=0)), 4),
             "precision": round(float(precision_score(y_test, y_bin, zero_division=0)), 4),
             "recall": round(float(recall_score(y_test, y_bin, zero_division=0)), 4),
@@ -148,6 +148,16 @@ def main() -> None:
     best_name = max(results, key=lambda k: results[k]["roc_auc"])
     summary = {"models": results, "best_model": best_name}
     save_json("08_ensemble_summary.json", summary)
+
+    # Persist the champion model for the real-time predictor sandbox
+    try:
+        import joblib
+        import os
+        from common import OUTPUT_DIR
+        joblib.dump(MODELS[best_name], os.path.join(OUTPUT_DIR, "champion_model.joblib"))
+        print(f"  [saved] Champion model '{best_name}' exported to champion_model.joblib")
+    except Exception as e:
+        print(f"  [warning] Could not export champion model: {e}")
 
     print("\n--- Ensemble Results ---")
     for name, m in results.items():

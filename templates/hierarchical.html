@@ -13,33 +13,89 @@
 <div class="page-main">
   <section class="section">
     <div class="stats-grid">
+      <div class="stat-card accent-green">
+        <div class="stat-label">Clusters Formed</div>
+        <div class="stat-value">{{ summary.n_clusters | default(4) }} Clusters</div>
+        <div class="stat-sub">Agglomerative tree partition (Ward)</div>
+      </div>
+      <div class="stat-card accent-purple">
+        <div class="stat-label">Optimal Criterion</div>
+        <div class="stat-value">Ward Linkage</div>
+        <div class="stat-sub">Minimizes within-cluster variance</div>
+      </div>
       <div class="stat-card">
         <div class="stat-label">Evaluated Linkages</div>
-        <div class="stat-value">4</div>
+        <div class="stat-value">4 Methods</div>
         <div class="stat-sub">Single, Complete, Avg, Ward</div>
       </div>
-      <div class="stat-card accent-green">
-        <div class="stat-label">Best Criterion</div>
-        <div class="stat-value">Ward Linkage</div>
-        <div class="stat-sub">Minimizes variance merge</div>
+      <div class="stat-card">
+        <div class="stat-label">Distance Metric</div>
+        <div class="stat-value">Euclidean</div>
+        <div class="stat-sub">Standardized impression space</div>
       </div>
     </div>
   </section>
 
+  <!-- Hierarchical Cluster Breakdown Table -->
+  {% if summary.cluster_profiles %}
   <section class="section">
     <div class="section-title">
-      <span class="section-badge">DENDROGRAMS</span>
-      <span>Dendrogram Tree Comparisons</span>
+      <span class="section-badge">BRANCHES</span>
+      <span>Hierarchical Clusters Formed & Sub-Tree Profiles</span>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Cluster Branch</th>
+            <th>Sample Impressions</th>
+            <th>Population Share (%)</th>
+            <th>Branch CTR (%)</th>
+            <th>Tree Hierarchy Node</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in summary.cluster_profiles %}
+          <tr>
+            <td><strong style="color: #38bdf8;">Branch {{ c.cluster_id }}</strong></td>
+            <td>{{ "{:,}".format(c.count) }}</td>
+            <td><span class="badge badge-purple">{{ c.pct }}%</span></td>
+            <td><span class="badge {% if c.mean_ctr > 18 %}badge-green{% elif c.mean_ctr > 14 %}badge-blue{% else %}badge-orange{% endif %}">{{ c.mean_ctr }}%</span></td>
+            <td style="color: var(--text-secondary); font-size: 0.88rem;">{{ c.linkage_node }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+
+  <section class="section">
+    <div class="section-title">
+      <span class="section-badge">VISUALIZATIONS</span>
+      <span>Hierarchical Tree Dendrograms & 2D Cluster Partitions</span>
     </div>
 
-    <div class="figure-grid">
+    <div class="figure-grid" style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
+      <!-- Figure 1: 2D Cluster Partition -->
       <div class="figure-card full-width">
-        <h3>Dendrogram Visualizations for Linkage Methods</h3>
-        <p class="purpose">Hierarchical merge tree trees under Single, Complete, Average, and Ward linkage criteria.</p>
+        <h3>Figure 1: 2D Spatial Projection of Hierarchical Agglomerative Clusters (Ward Linkage)</h3>
+        <p class="purpose">2D PCA projection showing the {{ summary.n_clusters | default(4) }} distinct impression clusters resulting from cutting the Ward linkage dendrogram.</p>
+        <img src="{{ url_for('serve_figures', filename='hc_02_clusters_scatter.png') }}" alt="Hierarchical 2D Cluster Scatter">
+        <div class="observation">
+          <div class="obs-label">HIERARCHICAL MERGE</div>
+          Ward linkage agglomerates impressions into 4 well-separated convex groupings with distinct click rates ranging from low-conversion display to high-affinity in-app traffic.
+        </div>
+      </div>
+
+      <!-- Figure 2: Dendrograms -->
+      <div class="figure-card full-width">
+        <h3>Figure 2: Dendrogram Visualizations for 4 Linkage Methods</h3>
+        <p class="purpose">Hierarchical bottom-up merge trees under Single, Complete, Average, and Ward linkage criteria.</p>
         <img src="{{ url_for('serve_figures', filename='hc_01_dendrograms.png') }}" alt="Hierarchical Dendrograms">
         <div class="observation">
           <div class="obs-label">LINKAGE ANALYSIS</div>
-          Ward linkage produces the most balanced cluster hierarchy, avoiding the chaining effect observed in Single linkage.
+          Ward linkage produces the most balanced cluster hierarchy with clean branch cuts, avoiding the chaining effect observed in Single linkage.
         </div>
       </div>
     </div>

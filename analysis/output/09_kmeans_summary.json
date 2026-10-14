@@ -1,22 +1,49 @@
 {
   "k_optimal": 3,
+  "n_clusters": 3,
   "wcss": {
-    "2": 23175.75,
-    "3": 21958.94,
-    "4": 21077.3,
-    "5": 20287.47,
-    "6": 19652.83,
-    "7": 19093.87,
-    "8": 18597.77
+    "2": 54925.18,
+    "3": 49971.53,
+    "4": 46420.33,
+    "5": 41545.5,
+    "6": 39857.17,
+    "7": 37444.36,
+    "8": 35336.59
   },
   "silhouette_scores": {
-    "2": 0.0653,
-    "3": 0.0629,
-    "4": 0.0569,
-    "5": 0.0601,
-    "6": 0.0614,
-    "7": 0.0602,
-    "8": 0.0614
+    "2": 0.2482,
+    "3": 0.2632,
+    "4": 0.1792,
+    "5": 0.194,
+    "6": 0.1626,
+    "7": 0.1744,
+    "8": 0.1871
   },
-  "best_silhouette": 0.0653
+  "best_silhouette": 0.2632,
+  "cluster_profiles": [
+    {
+      "cluster_id": 0,
+      "count": 920,
+      "pct": 30.67,
+      "mean_ctr": 14.35,
+      "persona_name": "High-Engagement In-App Traffic",
+      "persona_desc": "Premium app inventory with elevated click propensity."
+    },
+    {
+      "cluster_id": 1,
+      "count": 1841,
+      "pct": 61.37,
+      "mean_ctr": 16.78,
+      "persona_name": "Standard Display Banners",
+      "persona_desc": "Baseline web publisher impressions with steady average engagement."
+    },
+    {
+      "cluster_id": 2,
+      "count": 239,
+      "pct": 7.97,
+      "mean_ctr": 21.34,
+      "persona_name": "High-Volume Long-Tail Impressions",
+      "persona_desc": "Mass programmatic impressions with lower conversion affinity."
+    }
+  ]
 }

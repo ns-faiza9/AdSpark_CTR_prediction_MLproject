@@ -1,6 +1,16 @@
 {
-  "mdi_top_feature": "C18_enc",
-  "permutation_top_feature": "site_id_freq",
-  "shap_top_feature": "C18_enc",
-  "description": "SHAP analysis reveals C18 and site_id frequency drive 50%+ of model log-odds impact."
+  "mdi_top_feature": "device_model_freq",
+  "permutation_top_feature": "site_domain_freq",
+  "shap_top_feature": "device_model_freq",
+  "top_features_ranking": [
+    "device_model_freq",
+    "site_id_freq",
+    "hour_of_day",
+    "C14_enc",
+    "app_id_freq",
+    "C21_enc",
+    "C17_enc",
+    "device_ip_freq"
+  ],
+  "description": "Analysis confirms device_model_freq and site_id_freq drive the strongest non-linear split gains in CTR prediction."
 }

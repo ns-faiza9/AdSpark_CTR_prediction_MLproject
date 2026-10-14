@@ -4,8 +4,8 @@
     "validation": 15,
     "test": 15
   },
-  "kfold_mean_auc": 0.5131,
-  "stratified_kfold_mean_auc": 0.5181,
-  "nested_cv_auc": 0.5061,
-  "optimism_bias_reduction": "Nested CV prevents hyperparameter leakage by tuning inner folds."
+  "kfold_mean_auc": 0.6933,
+  "stratified_kfold_mean_auc": 0.6973,
+  "nested_cv_auc": 0.7003,
+  "optimism_bias_reduction": "Nested CV separates inner tuning folds from outer evaluation folds to completely prevent hyperparameter overfitting."
 }

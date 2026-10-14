@@ -1,7 +1,12 @@
 {
+  "standard_threshold": 0.5,
+  "standard_train_accuracy": 0.8305261452498767,
+  "standard_test_accuracy": 0.8304979099161492,
   "best_threshold": 0.1775179954422597,
-  "train_accuracy": 0.616857474656156,
-  "test_accuracy": 0.6154047836948725,
+  "train_accuracy": 0.8305261452498767,
+  "test_accuracy": 0.8304979099161492,
+  "f1_optimized_train_accuracy": 0.616857474656156,
+  "f1_optimized_test_accuracy": 0.6154047836948725,
   "roc_auc": 0.6468370582164312,
   "pr_auc": 0.27370245955320666,
   "log_loss": 0.4336048347160098,
@@ -29,16 +34,16 @@
   },
   "scaling_comparison": {
     "Unscaled": {
-      "train_accuracy": 58.27,
-      "test_accuracy": 58.12
+      "train_accuracy": 83.34,
+      "test_accuracy": 82.77
     },
     "StandardScaler": {
-      "train_accuracy": 61.69,
-      "test_accuracy": 61.54
+      "train_accuracy": 83.34,
+      "test_accuracy": 82.78
     },
     "MinMaxScaler": {
-      "train_accuracy": 62.1,
-      "test_accuracy": 61.99
+      "train_accuracy": 83.34,
+      "test_accuracy": 82.78
     }
   }
 }

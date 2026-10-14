@@ -86,10 +86,10 @@
       <div class="figure-card full-width">
         <h3>RMSE Comparison</h3>
         <p class="purpose">Comparison of RMSE across OLS, Ridge, and Lasso.</p>
-        <img src="{{ url_for('serve_figures', filename='reg_02_rmse_comparison.png') }}" alt="Coefficients Comparison">
+        <img src="{{ url_for('serve_figures', filename='reg_02_rmse_comparison.png') }}" alt="RMSE Comparison">
         <div class="observation">
           <div class="obs-label">OBSERVATION</div>
-          L1 (Lasso) effectively zeroes out collinear features, performing automatic feature selection, while L2 smoothly penalizes magnitude.
+          L1 (Lasso) regression successfully zeroes out uninformative predictors (shrinking non-zero features from 23 to 19), while L2 (Ridge) smoothly shrinks all weights without eliminating features.
         </div>
       </div>
       

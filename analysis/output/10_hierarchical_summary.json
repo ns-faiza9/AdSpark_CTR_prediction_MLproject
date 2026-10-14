@@ -1,4 +1,6 @@
 {
+  "n_clusters": 4,
+  "best_criterion": "Ward Linkage",
   "linkage_methods": [
     "single",
     "complete",
@@ -6,10 +8,40 @@
     "ward"
   ],
   "max_distances": {
-    "single": 3.766,
-    "complete": 7.4768,
-    "average": 5.6308,
-    "ward": 11.5383
+    "single": 306.0997,
+    "complete": 1960.3173,
+    "average": 1184.5616,
+    "ward": 5045.1408
   },
+  "cluster_profiles": [
+    {
+      "cluster_id": 0,
+      "count": 679,
+      "pct": 56.58,
+      "mean_ctr": 19.0,
+      "linkage_node": "Ward Sub-tree Branch 0"
+    },
+    {
+      "cluster_id": 1,
+      "count": 371,
+      "pct": 30.92,
+      "mean_ctr": 12.67,
+      "linkage_node": "Ward Sub-tree Branch 1"
+    },
+    {
+      "cluster_id": 2,
+      "count": 90,
+      "pct": 7.5,
+      "mean_ctr": 25.56,
+      "linkage_node": "Ward Sub-tree Branch 2"
+    },
+    {
+      "cluster_id": 3,
+      "count": 60,
+      "pct": 5.0,
+      "mean_ctr": 20.0,
+      "linkage_node": "Ward Sub-tree Branch 3"
+    }
+  ],
   "cluster_structure": "4 clear sub-groups discovered via Ward linkage"
 }

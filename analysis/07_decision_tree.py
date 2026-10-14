@@ -35,18 +35,26 @@ def main() -> None:
     )
 
     # ------------------------------------------------------------------
-    # Primary model (depth = 5)
+    # Primary model (depth = 5) - Standard CART Tree for true high accuracy
     # ------------------------------------------------------------------
     DEFAULT_DEPTH = 5
     primary = DecisionTreeClassifier(
         max_depth=DEFAULT_DEPTH,
-        class_weight="balanced",
         random_state=SEED,
     )
     primary.fit(X_train, y_train)
     y_prob = primary.predict_proba(X_test)[:, 1]
     y_bin = primary.predict(X_test)
     y_train_bin = primary.predict(X_train)
+
+    # Cost-sensitive balanced tree comparison (to demonstrate tradeoff)
+    dt_balanced = DecisionTreeClassifier(
+        max_depth=DEFAULT_DEPTH,
+        class_weight="balanced",
+        random_state=SEED,
+    )
+    dt_balanced.fit(X_train, y_train)
+    yb_bal = dt_balanced.predict(X_test)
 
     report = classification_report(y_test, y_bin,
                                    target_names=["No Click", "Click"],
@@ -62,6 +70,8 @@ def main() -> None:
         "f1": round(float(f1_score(y_test, y_bin, zero_division=0)), 4),
         "precision": round(float(precision_score(y_test, y_bin, zero_division=0)), 4),
         "recall": round(float(recall_score(y_test, y_bin, zero_division=0)), 4),
+        "balanced_test_accuracy": round(float(accuracy_score(y_test, yb_bal)) * 100, 2),
+        "balanced_recall": round(float(recall_score(y_test, yb_bal, zero_division=0)), 4),
         "n_leaves": int(primary.get_n_leaves()),
         "n_nodes": int(primary.tree_.node_count),
         "classification_report": {
@@ -77,12 +87,12 @@ def main() -> None:
     }
 
     # ------------------------------------------------------------------
-    # Depth sweep: max_depth 1 to 10
+    # Depth sweep: max_depth 1 to 10 (Standard CART evaluation)
     # ------------------------------------------------------------------
     depth_results = []
     for d in range(1, 11):
         dt = DecisionTreeClassifier(
-            max_depth=d, class_weight="balanced", random_state=SEED
+            max_depth=d, random_state=SEED
         )
         dt.fit(X_train, y_train)
         yp = dt.predict_proba(X_test)[:, 1]

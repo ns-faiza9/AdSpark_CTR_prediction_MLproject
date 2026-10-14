@@ -26,7 +26,7 @@ def main() -> None:
         X, y, test_size=0.2, random_state=SEED, stratify=y
     )
 
-    rf = RandomForestClassifier(n_estimators=30, max_depth=6, class_weight='balanced', random_state=SEED)
+    rf = RandomForestClassifier(n_estimators=30, max_depth=6, class_weight='balanced', n_jobs=-1, random_state=SEED)
     rf.fit(X_train, y_train)
 
     y_prob = rf.predict_proba(X_test)[:, 1]

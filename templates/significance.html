@@ -25,8 +25,8 @@
       </div>
       <div class="stat-card accent-purple">
         <div class="stat-label">McNemar p-value</div>
-        <div class="stat-value">{{ summary.p_value | default('1.24e-12') }}</div>
-        <div class="stat-sub"><span style="color: var(--green); font-weight: 700;">p &lt; 0.05 (Significant)</span></div>
+        <div class="stat-value">{{ summary.p_value_display | default('0.9771') }}</div>
+        <div class="stat-sub"><span style="color: {% if summary.statistically_significant %}var(--green){% else %}var(--accent){% endif %}; font-weight: 700;">{% if summary.statistically_significant %}p &lt; 0.05 (Significant){% else %}p &ge; 0.05 (Comparable){% endif %}</span></div>
       </div>
     </div>
   </section>
@@ -44,7 +44,7 @@
         <img src="{{ url_for('serve_figures', filename='sig_01_mcnemar_contingency.png') }}" alt="McNemar Contingency Matrix">
         <div class="observation">
           <div class="obs-label">HYPOTHESIS TEST RESULT</div>
-          With a McNemar test statistic of \(\chi^2 = 3641.5\) and \(p < 0.0001\), we reject the null hypothesis of equal error rates. XGBoost's performance gain over Logistic Regression is statistically significant.
+          With an empirical McNemar test statistic of \(\chi^2 = {{ summary.mcnemar_statistic | default('0.0008') }}\) and \(p = {{ summary.p_value_display | default('0.9771') }}\), {{ summary.conclusion | default('the models exhibit comparable classification disagreement rates on the held-out sample.') }}
         </div>
       </div>
     </div>

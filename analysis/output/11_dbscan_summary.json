@@ -1,7 +1,108 @@
 {
-  "epsilon": 1.8,
+  "epsilon": 2.48,
   "min_samples": 5,
-  "estimated_clusters": 5,
-  "noise_points": 708,
-  "noise_percentage": 70.8
+  "n_clusters": 14,
+  "estimated_clusters": 14,
+  "noise_points": 275,
+  "noise_percentage": 18.33,
+  "cluster_profiles": [
+    {
+      "cluster_id": "0",
+      "count": 734,
+      "pct": 48.93,
+      "mean_ctr": 18.12,
+      "density_type": "Dense Core Segment"
+    },
+    {
+      "cluster_id": "1",
+      "count": 29,
+      "pct": 1.93,
+      "mean_ctr": 34.48,
+      "density_type": "Micro-Cluster"
+    },
+    {
+      "cluster_id": "2",
+      "count": 246,
+      "pct": 16.4,
+      "mean_ctr": 9.76,
+      "density_type": "Dense Core Segment"
+    },
+    {
+      "cluster_id": "3",
+      "count": 88,
+      "pct": 5.87,
+      "mean_ctr": 15.91,
+      "density_type": "Dense Core Segment"
+    },
+    {
+      "cluster_id": "4",
+      "count": 12,
+      "pct": 0.8,
+      "mean_ctr": 8.33,
+      "density_type": "Micro-Cluster"
+    },
+    {
+      "cluster_id": "5",
+      "count": 51,
+      "pct": 3.4,
+      "mean_ctr": 15.69,
+      "density_type": "Dense Core Segment"
+    },
+    {
+      "cluster_id": "6",
+      "count": 13,
+      "pct": 0.87,
+      "mean_ctr": 15.38,
+      "density_type": "Micro-Cluster"
+    },
+    {
+      "cluster_id": "7",
+      "count": 8,
+      "pct": 0.53,
+      "mean_ctr": 37.5,
+      "density_type": "Sparse Density Group"
+    },
+    {
+      "cluster_id": "8",
+      "count": 10,
+      "pct": 0.67,
+      "mean_ctr": 30.0,
+      "density_type": "Micro-Cluster"
+    },
+    {
+      "cluster_id": "9",
+      "count": 10,
+      "pct": 0.67,
+      "mean_ctr": 20.0,
+      "density_type": "Micro-Cluster"
+    },
+    {
+      "cluster_id": "10",
+      "count": 8,
+      "pct": 0.53,
+      "mean_ctr": 12.5,
+      "density_type": "Sparse Density Group"
+    },
+    {
+      "cluster_id": "11",
+      "count": 7,
+      "pct": 0.47,
+      "mean_ctr": 0.0,
+      "density_type": "Sparse Density Group"
+    },
+    {
+      "cluster_id": "12",
+      "count": 5,
+      "pct": 0.33,
+      "mean_ctr": 0.0,
+      "density_type": "Sparse Density Group"
+    },
+    {
+      "cluster_id": "13",
+      "count": 4,
+      "pct": 0.27,
+      "mean_ctr": 25.0,
+      "density_type": "Sparse Density Group"
+    }
+  ]
 }
